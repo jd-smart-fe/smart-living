@@ -1,0 +1,22 @@
+@mixin transform($transforms) {
+  -webkit-transform: $transforms;
+  -moz-transform: $transforms;
+  -ms-transform: $transforms;
+  -o-transform: $transforms;
+  transform: $transforms;
+}
+@mixin transition($transitions) {
+  -webkit-transition: $transitions;
+  -moz-transition: $transitions;
+  -ms-transition: $transitions;
+  -o-transition: $transitions;
+  transition: $transitions;
+}
+@mixin user-select($user-selects){
+  -webkit-touch-callout: $user-selects;
+  -webkit-user-select: $user-selects;
+  -khtml-user-select: $user-selects;
+  -moz-user-select: $user-selects;
+  -ms-user-select: $user-selects;
+  user-select: $user-selects;
+}

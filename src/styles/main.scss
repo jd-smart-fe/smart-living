@@ -1,0 +1,43 @@
+
+@import 'header';
+@import 'variables/color';
+@import 'variables/fonts';
+@import 'mixin/mixin';
+
+h1,h2,h3,h4,h5,h6,ol,ul,li,dl,dt,dd,input,textarea,button,p{margin:0;padding:0;}
+li{list-style: none;}
+h1,h2,h3,h4,h5,h6,thead,th{font-weight: normal;}
+input,textarea,button{ outline: none;border:none;background: none;}
+table{border-spacing: 0;}
+a,
+a:link,
+a:hover,
+a:active{
+  text-decoration: none;
+}
+a{
+  color:$font-gray;
+}
+img{vertical-align: top;}
+.clearfix:after{content:" ";display:block;height:0;visibility:hidden;clear:both;}
+.clearfix{zoom:1;}
+.btn-base {
+  background: #fff;
+  border: $bgray-bor;
+  color: $font-gray;
+  min-width: 60px;
+  height: 36px;
+  line-height: 34px;
+  text-align: center;
+  display: inline-block;
+  font-size: 14px;
+  padding: 0 10px;
+  margin: 0 5px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+.btn-blue{
+  background: $blue;
+  border: $blue-bor;
+  color: $white;
+}
