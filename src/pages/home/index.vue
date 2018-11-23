@@ -6,21 +6,21 @@
 </template>
 
 <script>
-import VHeader from '@/components/Header'
-import VContent from '@/components/Content'
+import VHeader from '../../components/Header/index.vue';
+import VContent from '../../components/Content/index.vue';
 
 export default {
   // name: 'Home',
   components: {
     VHeader,
-    VContent
+    VContent,
   },
-  data () {
+  data() {
     return {
-      msg: 'Welcome'
-    }
-  }
-}
+      msg: 'Welcome',
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

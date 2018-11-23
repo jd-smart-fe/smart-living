@@ -15,12 +15,12 @@
 // import vContent from './content'
 export default {
   // name: 'Header',
-  data () {
+  data() {
     return {
-      msg: 'Welcome'
-    }
-  }
-}
+      msg: 'Welcome',
+    };
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -271,19 +271,19 @@
 
 export default {
   name: 'v-content',
-  data () {
+  data() {
     return {
       msg: 'Welcome',
       tabs: ['信息组件', '功能组件'],
-      num: 0
-    }
+      num: 0,
+    };
   },
   methods: {
-    tab (index) {
-      this.num = index
-    }
-  }
-}
+    tab(index) {
+      this.num = index;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
