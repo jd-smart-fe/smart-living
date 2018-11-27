@@ -519,7 +519,7 @@ export default {
         lfun: {
           id: 'lfun',
           gName: 'fun',
-          gPull: true,
+          gPull: 'clone',
           gPut: false,
           bgColor: 'drag-blue',
           onMove: (evt, originalEvent, gName) => {
@@ -548,11 +548,6 @@ export default {
     const serveData = window.serveData;
     this.srcData = Object.assign({}, serveData);
     // this.srcData = this.transData(serveData);
-  },
-  watch: {
-    srcData: function (next, old) {
-      console.log(next ? next.data : null, old ? old.data : null);
-    }
   },
   methods: {
     tab(index) {
@@ -619,6 +614,7 @@ export default {
           if (curKey === key) {
             const item = {};
             item[key] = src[key];
+            console.log(sub);
             sub = Object.assign({}, sub, item);
             delete src[key];
           }
@@ -626,16 +622,21 @@ export default {
         this.submitData = Object.assign({}, this.submitData, {data: sub });
       } else if (type === 2) {
         const src = this.submitData.data;
-        let sub = this.srcData && this.srcData.data ? this.srcData.data : {};
+        // let sub = {};
         Object.keys(src).forEach((key) => {
           if (curKey === key) {
             const item = {};
             item[key] = src[key];
-            sub = Object.assign({}, sub, item);
+            // console.log(src[key]);
+            // sub = Object.assign({}, sub, item);
+            // this.$set(this.srcData.data, key, src[key]);
+
+            this.srcData.data = Object.assign({}, this.srcData.data, item);
+            this.srcData = Object.assign({}, this.srcData);
             delete src[key];
           }
         });
-        this.$set(this.srcData, 'data', sub);
+        // this.$set(this.srcData, 'data', sub);
         // this.srcData = Object.assign({}, this.srcData, {data: sub });
       } else {
         return;
