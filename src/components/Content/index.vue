@@ -20,18 +20,6 @@
                   <span>--</span>
                   <p>当前温度</p>
                 </li>
-                <!-- <li v-show="srcData && srcData.header && srcData.header.des_curtemp">
-                  <span>--</span>
-                  <p>{{srcData && srcData.header && srcData.header.des_curtemp ? srcData.header.des_curtemp : null}}</p>
-                </li>
-                <li v-show="srcData && srcData.header && srcData.header.des_pattern">
-                  <span>--</span>
-                  <p>{{srcData && srcData.header && srcData.header.des_pattern ? srcData.header.des_pattern : null}}</p>
-                </li>
-                <li v-show="srcData && srcData.header && srcData.header.des_speed">
-                  <span>--</span>
-                  <p>{{srcData && srcData.header && srcData.header.des_speed ? srcData.header.des_speed : null}}</p>
-                </li> -->
               </ul>
             </vue-drop>
           </div>
@@ -192,14 +180,6 @@
                   <!-- <div v-show="submitData && submitData.header && submitData.header.des_curtemp">
                     <span>--</span>
                     <p>{{submitData && submitData.header && submitData.header.des_curtemp ? submitData.header.des_curtemp : null}}</p>
-                  </div>
-                  <div v-show="submitData && submitData.header && submitData.header.des_pattern">
-                    <span>--</span>
-                    <p>{{submitData && submitData.header && submitData.header.des_pattern ? submitData.header.des_pattern : null}}</p>
-                  </div>
-                  <div v-show="submitData && submitData.header && submitData.header.des_speed">
-                    <span>--</span>
-                    <p>{{submitData && submitData.header && submitData.header.des_speed ? submitData.header.des_speed : null}}</p>
                   </div> -->
                 </div>
               </vue-drop>
@@ -220,14 +200,6 @@
                 <!-- <li v-show="submitData && submitData.header && submitData.header.des_curtemp">
                   <span>--</span>
                   <p>{{submitData && submitData.header && submitData.header.des_curtemp ? submitData.header.des_curtemp : null}}</p>
-                </li>
-                <li v-show="submitData && submitData.header && submitData.header.des_pattern">
-                  <span>--</span>
-                  <p>{{submitData && submitData.header && submitData.header.des_pattern ? submitData.header.des_pattern : null}}</p>
-                </li>
-                <li v-show="submitData && submitData.header && submitData.header.des_speed">
-                  <span>--</span>
-                  <p>{{submitData && submitData.header && submitData.header.des_speed ? submitData.header.des_speed : null}}</p>
                 </li> -->
               </ul>
             </vue-drop>
@@ -237,29 +209,33 @@
             :elId="info.rfun.id"
             :groupName="info.rfun.gName"
             :bgColor="info.rfun.bgColor ? info.rfun.bgColor : ''"
+            :filter="info.rfun.filter"
+            :onFilter="info.rfun.onFilter"
           >
             <div class="functionAssembly mh100" id="rfun">
                 <!--设备组件-->
                 <template v-if="submitData && submitData.data.power && submitData.data.power.is_show">
-                  <div class="deviceStatus" data-type="power">
+                  <div class="deviceStatus item" data-type="power">
                     <div class="title">设备已关闭</div>
                     <button class="icon-power"></button>
+                    <i class="js-remove">✖</i>
                   </div>
                 </template>
                 <!--当前温度组件-->
                 <template v-if="submitData && submitData.data.counter && submitData.data.counter.is_show">
-                  <div class="temperatureSetting" data-type="counter">
+                  <div class="temperatureSetting item" data-type="counter">
                     <div class="title">当前温度</div>
                     <div class="number">22</div>
                     <div class="only-btn">
                       <button class="icon-plus"></button>
                       <button class="icon-minus"></button>
                     </div>
+                    <i class="js-remove">✖</i>
                   </div>
                 </template>
                 <!--模式设置组件-->
                 <template v-if="submitData && submitData.data.modes && submitData.data.modes.is_show">
-                  <div class="patternSetting" data-type="modes">
+                  <div class="patternSetting item" data-type="modes">
                     <div class="title">模式设置</div>
                     <ul class="patternList">
                       <li>
@@ -305,11 +281,12 @@
                         </div>
                       </li>
                     </ul>
+                    <i class="js-remove">✖</i>
                   </div>
                 </template>
                 <!--风速调节组件-->
                 <template v-if="submitData && submitData.data.windRang && submitData.data.windRang.is_show">
-                  <div class="patternSetting" data-type="windRang">
+                  <div class="patternSetting item" data-type="windRang">
                     <div class="title">风速调节</div>
                     <div class="windSpeed">
                       <div class="slider-button"></div>
@@ -323,33 +300,37 @@
                         <li>自然</li>
                       </ul>
                     </div>
+                    <i class="js-remove">✖</i>
                   </div>
                 </template>
                 <!--屏显组件-->
                 <template v-if="submitData && submitData.data.screenDisplay && submitData.data.screenDisplay.is_show">
-                  <div class="panelAssembly" data-type="screenDisplay">
+                  <div class="panelAssembly item" data-type="screenDisplay">
                     <div class="title">屏显</div>
                     <div class="switch-off">
                       <span class="switch-button"></span>
                     </div>
+                    <i class="js-remove">✖</i>
                   </div>
                 </template>
                 <!--静音组件-->
                 <template v-if="submitData && submitData.data.mute && submitData.data.mute.is_show">
-                  <div class="panelAssembly" data-type="mute">
+                  <div class="panelAssembly item" data-type="mute">
                     <div class="title">静音</div>
                     <div class="switch-off">
                       <span class="switch-button"></span>
                     </div>
+                    <i class="js-remove">✖</i>
                   </div>
                 </template>
                 <!--睡眠组件-->
                 <template v-if="submitData && submitData.data.sleep && submitData.data.sleep.is_show">
-                  <div class="panelAssembly" data-type="sleep">
+                  <div class="panelAssembly item" data-type="sleep">
                     <div class="title">睡眠</div>
                     <div class="switch-off">
                       <span class="switch-button"></span>
                     </div>
+                    <i class="js-remove">✖</i>
                   </div>
                 </template>
             </div>
@@ -386,7 +367,7 @@ window.serveData = {
     },
     counter: {
       type: 'Counter',
-      is_show: false,
+      is_show: true,
       title: '温度设置',
     },
     modes: {
@@ -507,15 +488,7 @@ export default {
             this.onMoveChangeColor(gName);
           },
           onEnd: (evt, groupName) => {
-            const txt = evt.item.childNodes[2].innerText;
             this.onEndChangeColor();
-            this.submitData = Object.assign({}, {
-              header: {
-                type: this.srcData.header.type,
-                is_show: true,
-              }
-            });
-            this.deleDataByTxt(txt, this.srcData, this.submitData);
           },
         },
         // 头部信息-右侧上
@@ -529,24 +502,6 @@ export default {
           onFilter: evt => {
             evt.item.parentNode.removeChild(evt.item);
           },
-          onChoose: evt => {
-            const parent = evt.target;
-            const index = evt.oldIndex;
-            const whichChild = parent.childNodes[index];
-            whichChild.className = `${whichChild.className} pos-relative`;
-            const rEle = whichChild.getElementsByClassName('js-remove');
-            if (rEle.length > 0) {
-              console.log(rEle);
-            } else {
-              const removeEle = document.createElement('span');
-              removeEle.className = 'js-remove';
-              removeEle.style.position = 'absolute';
-              removeEle.style.top = 0;
-              removeEle.style.right = 0;
-              removeEle.innerText = '✖';
-              whichChild.appendChild(removeEle);
-            }
-          },
         },
         // 头部信息-右侧下面
         rbInfo: {
@@ -558,24 +513,6 @@ export default {
           filter: '.js-remove',
           onFilter: evt => {
             evt.item.parentNode.removeChild(evt.item);
-          },
-          onChoose: evt => {
-            const parent = evt.target;
-            const index = evt.oldIndex;
-            const whichChild = parent.childNodes[index];
-            whichChild.className = `${whichChild.className} pos-relative`;
-            const rEle = whichChild.getElementsByClassName('js-remove');
-            if (rEle.length > 0) {
-              console.log(rEle);
-            } else {
-              const removeEle = document.createElement('span');
-              removeEle.className = 'js-remove';
-              removeEle.style.position = 'absolute';
-              removeEle.style.top = 0;
-              removeEle.style.right = 0;
-              removeEle.innerText = '✖';
-              whichChild.appendChild(removeEle);
-            }
           },
         },
         // 左边功能
@@ -591,14 +528,18 @@ export default {
           onEnd: (evt, groupName) => {
             const key = evt.item.getAttribute('data-type')
             this.onEndChangeColor();
-            this.transDataByKey(key);
-            // console.log(oldIndex);
+            this.transDataByKey(key, 1);
           },
         },
         rfun: {
           id: 'rfun',
           gName: 'fun',
           bgColor: '',
+          filter: '.js-remove',
+          onFilter: (evt) => {
+            const key = evt.item.getAttribute('data-type')
+            this.transDataByKey(key, 2);
+          },
         },
       },
     };
@@ -607,6 +548,11 @@ export default {
     const serveData = window.serveData;
     this.srcData = Object.assign({}, serveData);
     // this.srcData = this.transData(serveData);
+  },
+  watch: {
+    srcData: function (next, old) {
+      console.log(next ? next.data : null, old ? old.data : null);
+    }
   },
   methods: {
     tab(index) {
@@ -665,19 +611,35 @@ export default {
       }
     },
     // 通过index变换源数据和要提交数据
-    transDataByKey(curKey) {
-      const src = this.srcData.data;
-      let sub = this.submitData && this.submitData.data ? this.submitData.data : {};
-      Object.keys(src).forEach((key) => {
-        if (curKey === key) {
-          const item = {};
-          item[key] = src[key];
-          console.log(key);
-          sub = Object.assign({}, sub, item);
-          delete src[key];
-        }
-      });
-      this.submitData = Object.assign({}, this.submitData, {data: sub });
+    transDataByKey(curKey, type) {
+      if (type === 1) {
+        const src = this.srcData.data;
+        let sub = this.submitData && this.submitData.data ? this.submitData.data : {};
+        Object.keys(src).forEach((key) => {
+          if (curKey === key) {
+            const item = {};
+            item[key] = src[key];
+            sub = Object.assign({}, sub, item);
+            delete src[key];
+          }
+        });
+        this.submitData = Object.assign({}, this.submitData, {data: sub });
+      } else if (type === 2) {
+        const src = this.submitData.data;
+        let sub = this.srcData && this.srcData.data ? this.srcData.data : {};
+        Object.keys(src).forEach((key) => {
+          if (curKey === key) {
+            const item = {};
+            item[key] = src[key];
+            sub = Object.assign({}, sub, item);
+            delete src[key];
+          }
+        });
+        this.$set(this.srcData, 'data', sub);
+        // this.srcData = Object.assign({}, this.srcData, {data: sub });
+      } else {
+        return;
+      }
     },
   },
 };
@@ -866,6 +828,30 @@ export default {
         top: 50%;
         font-size: $fontSize18;
         @include transform(translateY(-50%));
+      }
+    }
+    .functionAssembly{
+      .item{
+        position: relative;
+        .js-remove{
+          -webkit-transition: opacity .2s;
+          transition: opacity .2s;
+          opacity: 0;
+          display: block;
+          cursor: pointer;
+          color: #c00;
+          top: 5px;
+          right: 5px;
+          position: absolute;
+          font-style: normal;
+          line-height: .12px;
+        }
+        &:hover{
+          background-color: rgba(2, 186, 124, 0.21);
+          .js-remove{
+            opacity: 1;
+          }
+        }
       }
     }
   }
