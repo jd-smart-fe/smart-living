@@ -31,6 +31,7 @@
               :groupPut="info.lfun.gPut"
               :onMove="info.lfun.onMove"
               :onEnd="info.lfun.onEnd"
+              :sort="info.lfun.sort"
             >
               <div class="scrollerCon-left" id="lfun">
                 <!--设备组件-->
@@ -211,6 +212,7 @@
             :bgColor="info.rfun.bgColor ? info.rfun.bgColor : ''"
             :filter="info.rfun.filter"
             :onFilter="info.rfun.onFilter"
+            :onAdd="info.rfun.onAdd"
           >
             <div class="functionAssembly mh100" id="rfun">
                 <!--设备组件-->
@@ -520,15 +522,14 @@ export default {
           id: 'lfun',
           gName: 'fun',
           gPull: true,
-          gPut: false,
+          gPut: true,
           bgColor: 'drag-blue',
+          sort: false,
           onMove: (evt, originalEvent, gName) => {
             this.onMoveChangeColor(gName);
           },
           onEnd: (evt, groupName) => {
-            const key = evt.item.getAttribute('data-type')
             this.onEndChangeColor();
-            this.transDataByKey(key, 1);
           },
         },
         rfun: {
@@ -538,10 +539,16 @@ export default {
           filter: '.js-remove',
           onFilter: (evt) => {
             const key = evt.item.getAttribute('data-type');
-            document.querySelector('#lfun').appendChild(evt.item);
-            // console.log(document.querySelector('#lfun'));
+            const pNode = document.querySelector('#lfun');
+            const item = evt.item.removeChild(evt.item.lastChild)
+            const node = evt.item.cloneNode(true);
             this.transDataByKey(key, 2);
+            this.addChild(pNode, node, key);
           },
+          onAdd: (evt) => {
+            const key = evt.item.getAttribute('data-type')
+            this.transDataByKey(key, 1);
+          }
         },
       },
     };
@@ -638,12 +645,40 @@ export default {
             delete src[key];
           }
         });
-        // this.$set(this.srcData, 'data', sub);
-        // this.srcData = Object.assign({}, this.srcData, {data: sub });
       } else {
         return;
       }
     },
+    // 给元素增加节点
+    addChild(pNode, node, key) {
+      let index = 0;
+      switch(key) {
+        case 'power':
+          index = 0;
+          break;
+        case 'counter':
+          index = 1;
+          break;
+        case 'modes':
+          index = 2;
+          break;
+        case 'windRang':
+          index = 3;
+          break;
+        case 'screenDisplay':
+          index = 4;
+          break;
+        case 'mute':
+          index = 5;
+          break;
+        case 'sleep':
+          index = 6;
+          break;
+        default:
+          break;
+      }
+      pNode.insertBefore(node, pNode.childNodes[index]);
+    }
   },
 };
 </script>
