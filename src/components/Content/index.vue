@@ -16,7 +16,11 @@
               :onEnd="info.lhInfo.onEnd"
             >
               <ul class="scrollerAssembly" id="lhInfo">
-                <li v-show="srcData && srcData.header && srcData.header.des_curtemp">
+                <li>
+                  <span>--</span>
+                  <p>当前温度</p>
+                </li>
+                <!-- <li v-show="srcData && srcData.header && srcData.header.des_curtemp">
                   <span>--</span>
                   <p>{{srcData && srcData.header && srcData.header.des_curtemp ? srcData.header.des_curtemp : null}}</p>
                 </li>
@@ -27,7 +31,7 @@
                 <li v-show="srcData && srcData.header && srcData.header.des_speed">
                   <span>--</span>
                   <p>{{srcData && srcData.header && srcData.header.des_speed ? srcData.header.des_speed : null}}</p>
-                </li>
+                </li> -->
               </ul>
             </vue-drop>
           </div>
@@ -42,104 +46,118 @@
             >
               <div class="scrollerCon-left" id="lfun">
                 <!--设备组件-->
-                <div class="deviceStatus">
-                  <div class="title">设备已关闭</div>
-                  <button class="icon-power"></button>
-                </div>
-                <!--当前温度组件-->
-                <div class="temperatureSetting">
-                  <div class="title">当前温度</div>
-                  <div class="number">22</div>
-                  <div class="only-btn">
-                    <button class="icon-plus"></button>
-                    <button class="icon-minus"></button>
+                <template v-if="srcData.data.power && srcData.data.power.is_show">
+                  <div class="deviceStatus" data-type="power">
+                    <div class="title">设备已关闭</div>
+                    <button class="icon-power"></button>
                   </div>
-                </div>
+                </template>
+                <!--当前温度组件-->
+                <template v-if="srcData.data.counter && srcData.data.counter.is_show">
+                  <div class="temperatureSetting" data-type="counter">
+                    <div class="title">当前温度</div>
+                    <div class="number">22</div>
+                    <div class="only-btn">
+                      <button class="icon-plus"></button>
+                      <button class="icon-minus"></button>
+                    </div>
+                  </div>
+                </template>
                 <!--模式设置组件-->
-                <div class="patternSetting">
-                  <div class="title">模式设置</div>
-                  <ul class="patternList">
-                    <li>
-                      <div class="patternText">
-                        <span class="icon-mode-automatic"></span>
-                        自动
-                      </div>
-                    </li>
-                    <li>
-                      <div class="patternText">
-                        <span class="icon-mode-freeze"></span>
-                        制冷
-                      </div>
-                    </li>
-                    <li>
-                      <div class="patternText">
-                        <span class="icon-mode-holiday"></span>
-                        制热
-                      </div>
-                    </li>
-                    <li>
-                      <div class="patternText">
-                        <span class="icon-mode-dry"></span>
-                        除湿
-                      </div>
-                    </li>
-                    <li>
-                      <div class="patternText">
-                        <span class="icon-range-large"></span>
-                        送风
-                      </div>
-                    </li>
-                    <li>
-                      <div class="patternText">
-                        <span class="icon-mode-smart"></span>
-                        智能
-                      </div>
-                    </li>
-                    <li>
-                      <div class="patternText">
-                        <span class="icon-mode-cool"></span>
-                        通风
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                <!--风速调节组件-->
-                <div class="patternSetting">
-                  <div class="title">风速调节</div>
-                  <div class="windSpeed">
-                    <div class="slider-button"></div>
-                    <ul class="windSpeed-list">
-                      <li>自动</li>
-                      <li>微风</li>
-                      <li>低风</li>
-                      <li>中风</li>
-                      <li>高风</li>
-                      <li>静音</li>
-                      <li>自然</li>
+                <template v-if="srcData.data.modes && srcData.data.modes.is_show">
+                  <div class="patternSetting" data-type="modes">
+                    <div class="title">模式设置</div>
+                    <ul class="patternList">
+                      <li>
+                        <div class="patternText">
+                          <span class="icon-mode-automatic"></span>
+                          自动
+                        </div>
+                      </li>
+                      <li>
+                        <div class="patternText">
+                          <span class="icon-mode-freeze"></span>
+                          制冷
+                        </div>
+                      </li>
+                      <li>
+                        <div class="patternText">
+                          <span class="icon-mode-holiday"></span>
+                          制热
+                        </div>
+                      </li>
+                      <li>
+                        <div class="patternText">
+                          <span class="icon-mode-dry"></span>
+                          除湿
+                        </div>
+                      </li>
+                      <li>
+                        <div class="patternText">
+                          <span class="icon-range-large"></span>
+                          送风
+                        </div>
+                      </li>
+                      <li>
+                        <div class="patternText">
+                          <span class="icon-mode-smart"></span>
+                          智能
+                        </div>
+                      </li>
+                      <li>
+                        <div class="patternText">
+                          <span class="icon-mode-cool"></span>
+                          通风
+                        </div>
+                      </li>
                     </ul>
                   </div>
-                </div>
-                <!--屏显组件-->
-                <div class="panelAssembly">
-                  <div class="title">屏显</div>
-                  <div class="switch-off">
-                    <span class="switch-button"></span>
+                </template>
+                <!--风速调节组件-->
+                <template v-if="srcData.data.windRang && srcData.data.windRang.is_show">
+                  <div class="patternSetting" data-type="windRang">
+                    <div class="title">风速调节</div>
+                    <div class="windSpeed">
+                      <div class="slider-button"></div>
+                      <ul class="windSpeed-list">
+                        <li>自动</li>
+                        <li>微风</li>
+                        <li>低风</li>
+                        <li>中风</li>
+                        <li>高风</li>
+                        <li>静音</li>
+                        <li>自然</li>
+                      </ul>
+                    </div>
                   </div>
-                </div>
+                </template>
                 <!--屏显组件-->
-                <div class="panelAssembly">
-                  <div class="title">静音</div>
-                  <div class="switch-off">
-                    <span class="switch-button"></span>
+                <template v-if="srcData.data.screenDisplay && srcData.data.screenDisplay.is_show">
+                  <div class="panelAssembly" data-type="screenDisplay">
+                    <div class="title">屏显</div>
+                    <div class="switch-off">
+                      <span class="switch-button"></span>
+                    </div>
                   </div>
-                </div>
-                <!--屏显组件-->
-                <div class="panelAssembly">
-                  <div class="title">睡眠</div>
-                  <div class="switch-off">
-                    <span class="switch-button"></span>
+                </template>
+                <!--静音组件-->
+                <template v-if="srcData.data.mute && srcData.data.mute.is_show">
+                  <div class="panelAssembly" data-type="mute">
+                    <div class="title">静音</div>
+                    <div class="switch-off">
+                      <span class="switch-button"></span>
+                    </div>
                   </div>
-                </div>
+                </template>
+                <!--睡眠组件-->
+                <template v-if="srcData.data.sleep && srcData.data.sleep.is_show">
+                  <div class="panelAssembly" data-type="sleep">
+                    <div class="title">睡眠</div>
+                    <div class="switch-off">
+                      <span class="switch-button"></span>
+                    </div>
+                  </div>
+                </template>
               </div>
             </vue-drop>
           </div>
@@ -171,7 +189,7 @@
                   class="temperatureAssembly"
                   id="rtInfo"
                 >
-                  <div v-show="submitData && submitData.header && submitData.header.des_curtemp">
+                  <!-- <div v-show="submitData && submitData.header && submitData.header.des_curtemp">
                     <span>--</span>
                     <p>{{submitData && submitData.header && submitData.header.des_curtemp ? submitData.header.des_curtemp : null}}</p>
                   </div>
@@ -182,7 +200,7 @@
                   <div v-show="submitData && submitData.header && submitData.header.des_speed">
                     <span>--</span>
                     <p>{{submitData && submitData.header && submitData.header.des_speed ? submitData.header.des_speed : null}}</p>
-                  </div>
+                  </div> -->
                 </div>
               </vue-drop>
               <!--end-->
@@ -199,7 +217,7 @@
               :onAdd="info.rbInfo.onAdd"
             >
               <ul class="patternAssembly" id="rbInfo">
-                <li v-show="submitData && submitData.header && submitData.header.des_curtemp">
+                <!-- <li v-show="submitData && submitData.header && submitData.header.des_curtemp">
                   <span>--</span>
                   <p>{{submitData && submitData.header && submitData.header.des_curtemp ? submitData.header.des_curtemp : null}}</p>
                 </li>
@@ -210,7 +228,7 @@
                 <li v-show="submitData && submitData.header && submitData.header.des_speed">
                   <span>--</span>
                   <p>{{submitData && submitData.header && submitData.header.des_speed ? submitData.header.des_speed : null}}</p>
-                </li>
+                </li> -->
               </ul>
             </vue-drop>
           </div>
@@ -221,105 +239,119 @@
             :bgColor="info.rfun.bgColor ? info.rfun.bgColor : ''"
           >
             <div class="functionAssembly mh100" id="rfun">
-              <!--设备组件-->
-              <!-- <div class="deviceStatus">
-                <div class="title">设备已关闭</div>
-                <button class="icon-power"></button>
-              </div> -->
-              <!--当前温度组件-->
-              <!-- <div class="temperatureSetting">
-                <div class="title">当前温度</div>
-                <div class="number">22</div>
-                <div class="only-btn">
-                  <button class="icon-plus"></button>
-                  <button class="icon-minus"></button>
-                </div>
-              </div> -->
-              <!--模式设置组件-->
-              <!-- <div class="patternSetting">
-                <div class="title">模式设置</div>
-                <ul class="patternList">
-                  <li>
-                    <div class="patternText">
-                      <span class="icon-mode-automatic"></span>
-                      自动
+                <!--设备组件-->
+                <template v-if="submitData && submitData.data.power && submitData.data.power.is_show">
+                  <div class="deviceStatus" data-type="power">
+                    <div class="title">设备已关闭</div>
+                    <button class="icon-power"></button>
+                  </div>
+                </template>
+                <!--当前温度组件-->
+                <template v-if="submitData && submitData.data.counter && submitData.data.counter.is_show">
+                  <div class="temperatureSetting" data-type="counter">
+                    <div class="title">当前温度</div>
+                    <div class="number">22</div>
+                    <div class="only-btn">
+                      <button class="icon-plus"></button>
+                      <button class="icon-minus"></button>
                     </div>
-                  </li>
-                  <li>
-                    <div class="patternText">
-                      <span class="icon-mode-freeze"></span>
-                      制冷
+                  </div>
+                </template>
+                <!--模式设置组件-->
+                <template v-if="submitData && submitData.data.modes && submitData.data.modes.is_show">
+                  <div class="patternSetting" data-type="modes">
+                    <div class="title">模式设置</div>
+                    <ul class="patternList">
+                      <li>
+                        <div class="patternText">
+                          <span class="icon-mode-automatic"></span>
+                          自动
+                        </div>
+                      </li>
+                      <li>
+                        <div class="patternText">
+                          <span class="icon-mode-freeze"></span>
+                          制冷
+                        </div>
+                      </li>
+                      <li>
+                        <div class="patternText">
+                          <span class="icon-mode-holiday"></span>
+                          制热
+                        </div>
+                      </li>
+                      <li>
+                        <div class="patternText">
+                          <span class="icon-mode-dry"></span>
+                          除湿
+                        </div>
+                      </li>
+                      <li>
+                        <div class="patternText">
+                          <span class="icon-range-large"></span>
+                          送风
+                        </div>
+                      </li>
+                      <li>
+                        <div class="patternText">
+                          <span class="icon-mode-smart"></span>
+                          智能
+                        </div>
+                      </li>
+                      <li>
+                        <div class="patternText">
+                          <span class="icon-mode-cool"></span>
+                          通风
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </template>
+                <!--风速调节组件-->
+                <template v-if="submitData && submitData.data.windRang && submitData.data.windRang.is_show">
+                  <div class="patternSetting" data-type="windRang">
+                    <div class="title">风速调节</div>
+                    <div class="windSpeed">
+                      <div class="slider-button"></div>
+                      <ul class="windSpeed-list">
+                        <li>自动</li>
+                        <li>微风</li>
+                        <li>低风</li>
+                        <li>中风</li>
+                        <li>高风</li>
+                        <li>静音</li>
+                        <li>自然</li>
+                      </ul>
                     </div>
-                  </li>
-                  <li>
-                    <div class="patternText">
-                      <span class="icon-mode-holiday"></span>
-                      制热
+                  </div>
+                </template>
+                <!--屏显组件-->
+                <template v-if="submitData && submitData.data.screenDisplay && submitData.data.screenDisplay.is_show">
+                  <div class="panelAssembly" data-type="screenDisplay">
+                    <div class="title">屏显</div>
+                    <div class="switch-off">
+                      <span class="switch-button"></span>
                     </div>
-                  </li>
-                  <li>
-                    <div class="patternText">
-                      <span class="icon-mode-dry"></span>
-                      除湿
+                  </div>
+                </template>
+                <!--静音组件-->
+                <template v-if="submitData && submitData.data.mute && submitData.data.mute.is_show">
+                  <div class="panelAssembly" data-type="mute">
+                    <div class="title">静音</div>
+                    <div class="switch-off">
+                      <span class="switch-button"></span>
                     </div>
-                  </li>
-                  <li>
-                    <div class="patternText">
-                      <span class="icon-range-large"></span>
-                      送风
+                  </div>
+                </template>
+                <!--睡眠组件-->
+                <template v-if="submitData && submitData.data.sleep && submitData.data.sleep.is_show">
+                  <div class="panelAssembly" data-type="sleep">
+                    <div class="title">睡眠</div>
+                    <div class="switch-off">
+                      <span class="switch-button"></span>
                     </div>
-                  </li>
-                  <li>
-                    <div class="patternText">
-                      <span class="icon-mode-smart"></span>
-                      智能
-                    </div>
-                  </li>
-                  <li>
-                    <div class="patternText">
-                      <span class="icon-mode-cool"></span>
-                      通风
-                    </div>
-                  </li>
-                </ul>
-              </div> -->
-              <!--风速调节组件-->
-              <!-- <div class="patternSetting">
-                <div class="title">风速调节</div>
-                <div class="windSpeed">
-                  <div class="slider-button"></div>
-                  <ul class="windSpeed-list">
-                    <li>自动</li>
-                    <li>微风</li>
-                    <li>低风</li>
-                    <li>中风</li>
-                    <li>高风</li>
-                    <li>静音</li>
-                    <li>自然</li>
-                  </ul>
-                </div>
-              </div> -->
-              <!--屏显组件-->
-              <!-- <div class="panelAssembly">
-                <div class="title">屏显</div>
-                <div class="switch-off">
-                  <span class="switch-button"></span>
-                </div>
-              </div> -->
-              <!--屏显组件-->
-              <!-- <div class="panelAssembly">
-                <div class="title">静音</div>
-                <div class="switch-off">
-                  <span class="switch-button"></span>
-                </div>
-              </div> -->
-              <!--屏显组件-->
-              <!-- <div class="panelAssembly">
-                <div class="title">睡眠</div>
-                <div class="switch-off">
-                  <span class="switch-button"></span>
-                </div>
-              </div> -->
+                  </div>
+                </template>
             </div>
           </vue-drop>
         </div>
@@ -546,7 +578,7 @@ export default {
             }
           },
         },
-        // 头部功能
+        // 左边功能
         lfun: {
           id: 'lfun',
           gName: 'fun',
@@ -554,15 +586,13 @@ export default {
           gPut: false,
           bgColor: 'drag-blue',
           onMove: (evt, originalEvent, gName) => {
-            // const txt = evt.item.childNodes[2].innerText;
             this.onMoveChangeColor(gName);
-            // this.deleDataByTxt(txt, this.srcData, this.newObj);
           },
           onEnd: (evt, groupName) => {
-            const oldIndex = evt.oldIndex;
+            const key = evt.item.getAttribute('data-type')
             this.onEndChangeColor();
-            this.transDataByIndex(oldIndex, this.srcData, this.submitData);
-            console.log(oldIndex);
+            this.transDataByKey(key);
+            // console.log(oldIndex);
           },
         },
         rfun: {
@@ -573,9 +603,10 @@ export default {
       },
     };
   },
-  mounted() {
+  created() {
     const serveData = window.serveData;
-    this.srcData = this.transData(serveData);
+    this.srcData = Object.assign({}, serveData);
+    // this.srcData = this.transData(serveData);
   },
   methods: {
     tab(index) {
@@ -634,17 +665,19 @@ export default {
       }
     },
     // 通过index变换源数据和要提交数据
-    transDataByIndex(curIndex, src, submit) {
-      const srcBody = src.body;
-      this.submitData = Object.assign({}, submit, {
-        body: [],
-      });
-      srcBody.forEach((item, index) => {
-        if (index === curIndex) {
-          srcBody.splice(curIndex, 1);
-          this.submitData.body.push(item);
+    transDataByKey(curKey) {
+      const src = this.srcData.data;
+      let sub = this.submitData && this.submitData.data ? this.submitData.data : {};
+      Object.keys(src).forEach((key) => {
+        if (curKey === key) {
+          const item = {};
+          item[key] = src[key];
+          console.log(key);
+          sub = Object.assign({}, sub, item);
+          delete src[key];
         }
-      })
+      });
+      this.submitData = Object.assign({}, this.submitData, {data: sub });
     },
   },
 };
