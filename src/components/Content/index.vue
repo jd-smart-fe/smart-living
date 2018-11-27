@@ -15,12 +15,22 @@
               :onMove="info.lhInfo.onMove"
               :onEnd="info.lhInfo.onEnd"
             >
-              <ul class="scrollerAssembly" id="lhInfo">
-                <li>
-                  <span>--</span>
-                  <p>当前温度</p>
-                </li>
-              </ul>
+              <div id="lhInfo">
+                <ul class="scrollerAssembly">
+                  <li>
+                    <span>--</span>
+                    <p>当前温度</p>
+                  </li>
+                  <li>
+                    <span>--</span>
+                    <p>当前温度</p>
+                  </li>
+                  <li>
+                    <span>--</span>
+                    <p>当前温度</p>
+                  </li>
+                </ul>
+              </div>
             </vue-drop>
           </div>
           <div class="scrollerCon" v-show="num===1">
@@ -162,30 +172,27 @@
           </div>
           <!--信息组件-->
           <div class="assemblyInfo themeColor">
-            <div class="temperatureBox">
-              <!--start-->
-              <vue-drop
-                :elId="info.rtInfo.id"
-                :groupPull="info.rtInfo.gPull"
-                :groupPut="info.rtInfo.gPut"
-                :groupName="info.rtInfo.gName"
-                :bgColor="info.rtInfo.bgColor ? info.rtInfo.bgColor : ''"
-                :filter="info.rtInfo.filter"
-                :onFilter="info.rtInfo.onFilter"
-                :onChoose="info.rtInfo.onChoose"
-              >
-                <div
-                  class="temperatureAssembly"
-                  id="rtInfo"
-                >
-                  <!-- <div v-show="submitData && submitData.header && submitData.header.des_curtemp">
-                    <span>--</span>
-                    <p>{{submitData && submitData.header && submitData.header.des_curtemp ? submitData.header.des_curtemp : null}}</p>
+            <vue-drop
+              :elId="info.rtInfo.id"
+              :groupPull="info.rtInfo.gPull"
+              :groupPut="info.rtInfo.gPut"
+              :groupName="info.rtInfo.gName"
+              :bgColor="info.rtInfo.bgColor ? info.rtInfo.bgColor : ''"
+              :filter="info.rtInfo.filter"
+              :onFilter="info.rtInfo.onFilter"
+              :onChoose="info.rtInfo.onChoose"
+            >
+              <div class="temperatureBox" id="rtInfo">
+                <!--start-->
+                  <!-- <div class="temperatureAssembly">
+                    <div v-show="submitData && submitData.header && submitData.header.des_curtemp">
+                      <span>--</span>
+                      <p>{{submitData && submitData.header && submitData.header.des_curtemp ? submitData.header.des_curtemp : null}}</p>
+                    </div>
                   </div> -->
-                </div>
-              </vue-drop>
-              <!--end-->
-            </div>
+                <!--end-->
+              </div>
+            </vue-drop>
             <vue-drop
               :elId="info.rbInfo.id"
               :groupName="info.rbInfo.gName"
@@ -786,11 +793,12 @@ export default {
           overflow: hidden;
           text-align: center;
           margin-top: 10px;
+          border: $gray-white 1px solid;
+          background: $white;
+          padding: 5px;
           li {
-            width: 110px;
+            width: 50%;
             height: 60px;
-            margin: 10px 5px 0;
-            border: $gray-white 1px solid;
             background: $white;
             font-size: $fontSize12;
             padding: 10px 0;
@@ -801,9 +809,12 @@ export default {
               display: block;
               margin-bottom: 5px;
             }
-            &:hover {
-              border: $blue 1px solid;
+            &:first-child{
+             width: 100%;
             }
+          }
+          &:hover {
+            border: $blue 1px solid;
           }
         }
         .scrollerCon-left {
@@ -914,33 +925,63 @@ export default {
       background-image: linear-gradient(to bottom, #02ba7c, #34dfa5);
     }
     .temperatureBox {
-      width: 160px;
-      height: 120px;
+      position: relative;
+      width: 100%;
+      height: 180px;
       margin: auto;
-      border-radius: 12px 12px 0 0;
-      line-height: normal;
-      background-image: -webkit-gradient(
-        linear,
-        left top,
-        left bottom,
-        from(rgba(255, 255, 255, 0.5)),
-        to(rgba(255, 255, 255, 0))
-      );
-      background-image: -webkit-linear-gradient(
-        top,
-        rgba(255, 255, 255, 0.2),
-        rgba(255, 255, 255, 0)
-      );
-      background-image: -o-linear-gradient(
-        top,
-        rgba(255, 255, 255, 0.2),
-        rgba(255, 255, 255, 0)
-      );
-      background-image: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0.2),
-        rgba(255, 255, 255, 0)
-      );
+      .scrollerAssembly{
+        width: 100%;
+        overflow: hidden;
+        li{
+          float: left;
+          width: 50%;
+          font-size: $fontSize16;
+          padding: 18px 0;
+          span{
+            font-size: $fontSize24;
+            display: block;
+          }
+          &:first-child{
+            width: 100%;
+            span{
+              margin-bottom: 10px;
+            }
+          }
+        }
+      }
+      &::after{
+        content: '';
+        width: 160px;
+        height: 120px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        @include transform(translateX(-50%));
+        border-radius: 12px 12px 0 0;
+        line-height: normal;
+        background-image: -webkit-gradient(
+          linear,
+          left top,
+          left bottom,
+          from(rgba(255, 255, 255, 0.5)),
+          to(rgba(255, 255, 255, 0))
+        );
+        background-image: -webkit-linear-gradient(
+          top,
+          rgba(255, 255, 255, 0.2),
+          rgba(255, 255, 255, 0)
+        );
+        background-image: -o-linear-gradient(
+          top,
+          rgba(255, 255, 255, 0.2),
+          rgba(255, 255, 255, 0)
+        );
+        background-image: linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.2),
+          rgba(255, 255, 255, 0)
+        );
+      }
     }
   }
   .temperatureAssembly {
@@ -952,7 +993,7 @@ export default {
     }
   }
   .patternAssembly {
-    height: 60px;
+    height: 120px;
     margin-top: 10px;
     display: table;
     width: 100%;

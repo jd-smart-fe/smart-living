@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "vue": "^2.5.2",
+    "vue-drop": "^0.1.1",
     "vue-router": "^3.0.1",
     "whatwg-fetch": "^3.0.0"
   },
