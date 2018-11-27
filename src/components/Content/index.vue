@@ -519,7 +519,7 @@ export default {
         lfun: {
           id: 'lfun',
           gName: 'fun',
-          gPull: 'clone',
+          gPull: true,
           gPut: false,
           bgColor: 'drag-blue',
           onMove: (evt, originalEvent, gName) => {
@@ -537,7 +537,9 @@ export default {
           bgColor: '',
           filter: '.js-remove',
           onFilter: (evt) => {
-            const key = evt.item.getAttribute('data-type')
+            const key = evt.item.getAttribute('data-type');
+            document.querySelector('#lfun').appendChild(evt.item);
+            // console.log(document.querySelector('#lfun'));
             this.transDataByKey(key, 2);
           },
         },
