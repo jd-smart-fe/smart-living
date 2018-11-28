@@ -4,32 +4,40 @@
       <div class="scroller">
         <div class="scrollerInfo">
           <ul class="scrollerTab">
-            <li v-for='(item, index) in tabs' :class='{active:index == num}' @click='tab(index)' :key="index">{{item}}</li>
+            <li
+              v-for="(item, index) in tabs"
+              :class="{active:index == num}"
+              @click="tab(index)"
+              :key="index"
+            >{{item}}</li>
           </ul>
           <div v-show="num==0" class="scrollerCon">
             <vue-drop
-              :elId="info.lhInfo.id"
-              :groupName="info.lhInfo.gName"
-              :groupPull="info.lhInfo.gPull"
-              :groupPut="info.lhInfo.gPut"
-              :onMove="info.lhInfo.onMove"
-              :onEnd="info.lhInfo.onEnd"
+              :elId="info.lInfo.id"
+              :groupName="info.lInfo.gName"
+              :groupPull="info.lInfo.gPull"
+              :groupPut="info.lInfo.gPut"
+              :onMove="info.lInfo.onMove"
+              :onEnd="info.lInfo.onEnd"
+              :sort="info.lInfo.sort"
             >
-              <div id="lhInfo">
-                <ul class="scrollerAssembly">
-                  <li>
-                    <span>--</span>
-                    <p>当前温度</p>
-                  </li>
-                  <li>
-                    <span>--</span>
-                    <p>当前温度</p>
-                  </li>
-                  <li>
-                    <span>--</span>
-                    <p>当前温度</p>
-                  </li>
-                </ul>
+              <div id="lInfo">
+                <template v-if="srcData && srcData.data.header && srcData.data.header.is_show">
+                  <ul class="scrollerAssembly" data-type="header">
+                    <li>
+                      <span>--</span>
+                      <p>{{srcData && srcData.data && srcData.data.header && srcData.data.header.des_curtemp ? srcData.data.header.des_curtemp : null}}</p>
+                    </li>
+                    <li>
+                      <span>--</span>
+                      <p>{{srcData && srcData.data && srcData.data.header && srcData.data.header.des_pattern ?srcData.data.header.des_pattern : null}}</p>
+                    </li>
+                    <li>
+                      <span>--</span>
+                      <p>{{srcData && srcData.data && srcData.data.header && srcData.data.header.des_speed ?srcData.data.header.des_speed : null}}</p>
+                    </li>
+                  </ul>
+                </template>
               </div>
             </vue-drop>
           </div>
@@ -45,17 +53,21 @@
             >
               <div class="scrollerCon-left" id="lfun">
                 <!--设备组件-->
-                <template v-if="srcData.data.power && srcData.data.power.is_show">
+                <template v-if="srcData && srcData.data.power && srcData.data.power.is_show">
                   <div class="deviceStatus" data-type="power">
-                    <div class="title">设备已关闭</div>
+                    <div
+                      class="title"
+                    >{{srcData && srcData.data.power && srcData.data.power.title ? srcData.data.power.title : null}}</div>
                     <button class="icon-power"></button>
                   </div>
                 </template>
                 <!--当前温度组件-->
-                <template v-if="srcData.data.counter && srcData.data.counter.is_show">
+                <template v-if="srcData && srcData.data.counter && srcData.data.counter.is_show">
                   <div class="temperatureSetting" data-type="counter">
-                    <div class="title">当前温度</div>
-                    <div class="number">22</div>
+                    <div
+                      class="title"
+                    >{{srcData && srcData.data.counter && srcData.data.counter.title ? srcData.data.counter.title : null}}</div>
+                    <div class="number">--</div>
                     <div class="only-btn">
                       <button class="icon-plus"></button>
                       <button class="icon-minus"></button>
@@ -63,95 +75,71 @@
                   </div>
                 </template>
                 <!--模式设置组件-->
-                <template v-if="srcData.data.modes && srcData.data.modes.is_show">
+                <template v-if="srcData && srcData.data.modes && srcData.data.modes.is_show">
                   <div class="patternSetting" data-type="modes">
-                    <div class="title">模式设置</div>
+                    <div
+                      class="title"
+                    >{{srcData && srcData.data.modes && srcData.data.modes.title ? srcData.data.modes.title : null}}</div>
                     <ul class="patternList">
-                      <li>
+                      <li
+                        v-for="item in (srcData && srcData.data.modes && srcData.data.modes && srcData.data.modes.modeData ? srcData.data.modes.modeData : [])"
+                        :key="item.id"
+                      >
                         <div class="patternText">
-                          <span class="icon-mode-automatic"></span>
-                          自动
-                        </div>
-                      </li>
-                      <li>
-                        <div class="patternText">
-                          <span class="icon-mode-freeze"></span>
-                          制冷
-                        </div>
-                      </li>
-                      <li>
-                        <div class="patternText">
-                          <span class="icon-mode-holiday"></span>
-                          制热
-                        </div>
-                      </li>
-                      <li>
-                        <div class="patternText">
-                          <span class="icon-mode-dry"></span>
-                          除湿
-                        </div>
-                      </li>
-                      <li>
-                        <div class="patternText">
-                          <span class="icon-range-large"></span>
-                          送风
-                        </div>
-                      </li>
-                      <li>
-                        <div class="patternText">
-                          <span class="icon-mode-smart"></span>
-                          智能
-                        </div>
-                      </li>
-                      <li>
-                        <div class="patternText">
-                          <span class="icon-mode-cool"></span>
-                          通风
+                          <span :class="[item.icon]"></span>
+                          {{item.text}}
                         </div>
                       </li>
                     </ul>
                   </div>
                 </template>
                 <!--风速调节组件-->
-                <template v-if="srcData.data.windRang && srcData.data.windRang.is_show">
+                <template v-if="srcData && srcData.data.windRang && srcData.data.windRang.is_show">
                   <div class="patternSetting" data-type="windRang">
-                    <div class="title">风速调节</div>
+                    <div
+                      class="title"
+                    >{{srcData && srcData.data.windRang && srcData.data.windRang.title ? srcData.data.windRang.title : null}}</div>
                     <div class="windSpeed">
                       <div class="slider-button"></div>
                       <ul class="windSpeed-list">
-                        <li>自动</li>
-                        <li>微风</li>
-                        <li>低风</li>
-                        <li>中风</li>
-                        <li>高风</li>
-                        <li>静音</li>
-                        <li>自然</li>
+                        <li
+                          v-for="item in srcData && srcData.data.windRang && srcData.data.windRang.windRangValues ?  srcData.data.windRang.windRangValues : null"
+                          :key="item.value"
+                        >{{item.text}}</li>
                       </ul>
                     </div>
                   </div>
                 </template>
                 <!--屏显组件-->
-                <template v-if="srcData.data.screenDisplay && srcData.data.screenDisplay.is_show">
+                <template
+                  v-if="srcData && srcData.data.screenDisplay && srcData.data.screenDisplay.is_show"
+                >
                   <div class="panelAssembly" data-type="screenDisplay">
-                    <div class="title">屏显</div>
+                    <div
+                      class="title"
+                    >{{srcData && srcData.data.screenDisplay && srcData.data.screenDisplay.title ? srcData.data.screenDisplay.title : null}}</div>
                     <div class="switch-off">
                       <span class="switch-button"></span>
                     </div>
                   </div>
                 </template>
                 <!--静音组件-->
-                <template v-if="srcData.data.mute && srcData.data.mute.is_show">
+                <template v-if="srcData && srcData.data.mute && srcData.data.mute.is_show">
                   <div class="panelAssembly" data-type="mute">
-                    <div class="title">静音</div>
+                    <div
+                      class="title"
+                    >{{srcData && srcData.data.mute && srcData.data.mute.title ? srcData.data.mute.title : null}}</div>
                     <div class="switch-off">
                       <span class="switch-button"></span>
                     </div>
                   </div>
                 </template>
                 <!--睡眠组件-->
-                <template v-if="srcData.data.sleep && srcData.data.sleep.is_show">
+                <template v-if="srcData && srcData.data.sleep && srcData.data.sleep.is_show">
                   <div class="panelAssembly" data-type="sleep">
-                    <div class="title">睡眠</div>
+                    <div
+                      class="title"
+                    >{{srcData && srcData.data.sleep && srcData.data.sleep.title ? srcData.data.sleep.title : null}}</div>
                     <div class="switch-off">
                       <span class="switch-button"></span>
                     </div>
@@ -173,43 +161,34 @@
           <!--信息组件-->
           <div class="assemblyInfo themeColor">
             <vue-drop
-              :elId="info.rtInfo.id"
-              :groupPull="info.rtInfo.gPull"
-              :groupPut="info.rtInfo.gPut"
-              :groupName="info.rtInfo.gName"
-              :bgColor="info.rtInfo.bgColor ? info.rtInfo.bgColor : ''"
-              :filter="info.rtInfo.filter"
-              :onFilter="info.rtInfo.onFilter"
-              :onChoose="info.rtInfo.onChoose"
+              :elId="info.rInfo.id"
+              :groupName="info.rInfo.gName"
+              :bgColor="info.rInfo.bgColor ? info.rInfo.bgColor : ''"
+              :filter="info.rInfo.filter"
+              :onFilter="info.rInfo.onFilter"
+              :onAdd="info.rInfo.onAdd"
             >
-              <div class="temperatureBox" id="rtInfo">
-                <!--start-->
-                  <!-- <div class="temperatureAssembly">
-                    <div v-show="submitData && submitData.header && submitData.header.des_curtemp">
+              <div class="temperatureBox" id="rInfo">
+                <template
+                  v-if="submitData && submitData.data.header && submitData.data.header.is_show"
+                >
+                  <ul class="scrollerAssembly item" data-type="header">
+                    <li>
                       <span>--</span>
-                      <p>{{submitData && submitData.header && submitData.header.des_curtemp ? submitData.header.des_curtemp : null}}</p>
-                    </div>
-                  </div> -->
-                <!--end-->
+                      <p>{{submitData && submitData.data && submitData.data.header && submitData.data.header.des_curtemp ? submitData.data.header.des_curtemp : null}}</p>
+                    </li>
+                    <li>
+                      <span>--</span>
+                      <p>{{submitData && submitData.data && submitData.data.header && submitData.data.header.des_pattern ?submitData.data.header.des_pattern : null}}</p>
+                    </li>
+                    <li>
+                      <span>--</span>
+                      <p>{{submitData && submitData.data && submitData.data.header && submitData.data.header.des_speed ?submitData.data.header.des_speed : null}}</p>
+                    </li>
+                    <i class="js-remove">✖</i>
+                  </ul>
+                </template>
               </div>
-            </vue-drop>
-            <vue-drop
-              :elId="info.rbInfo.id"
-              :groupName="info.rbInfo.gName"
-              :groupPut="info.rbInfo.gPut"
-              :groupPull="info.rbInfo.gPull"
-              :bgColor="info.rbInfo.bgColor ? info.rbInfo.bgColor : ''"
-              :filter="info.rbInfo.filter"
-              :onFilter="info.rbInfo.onFilter"
-              :onChoose="info.rbInfo.onChoose"
-              :onAdd="info.rbInfo.onAdd"
-            >
-              <ul class="patternAssembly" id="rbInfo">
-                <!-- <li v-show="submitData && submitData.header && submitData.header.des_curtemp">
-                  <span>--</span>
-                  <p>{{submitData && submitData.header && submitData.header.des_curtemp ? submitData.header.des_curtemp : null}}</p>
-                </li> -->
-              </ul>
             </vue-drop>
           </div>
           <!--功能组件-->
@@ -222,264 +201,240 @@
             :onAdd="info.rfun.onAdd"
           >
             <div class="functionAssembly mh100" id="rfun">
-                <!--设备组件-->
-                <template v-if="submitData && submitData.data.power && submitData.data.power.is_show">
-                  <div class="deviceStatus item" data-type="power">
-                    <div class="title">设备已关闭</div>
-                    <button class="icon-power"></button>
-                    <i class="js-remove">✖</i>
+              <!--设备组件-->
+              <template v-if="submitData && submitData.data.power && submitData.data.power.is_show">
+                <div class="deviceStatus item" data-type="power">
+                  <div
+                    class="title"
+                  >{{submitData && submitData.data.power && submitData.data.power.title ? submitData.data.power.title : null}}</div>
+                  <button class="icon-power"></button>
+                  <i class="js-remove">✖</i>
+                </div>
+              </template>
+              <!--当前温度组件-->
+              <template
+                v-if="submitData && submitData.data.counter && submitData.data.counter.is_show"
+              >
+                <div class="temperatureSetting item" data-type="counter">
+                  <div
+                    class="title"
+                  >{{submitData && submitData.data.counter && submitData.data.counter.title ? submitData.data.counter.title : null}}</div>
+                  <div class="number">--</div>
+                  <div class="only-btn">
+                    <button class="icon-plus"></button>
+                    <button class="icon-minus"></button>
                   </div>
-                </template>
-                <!--当前温度组件-->
-                <template v-if="submitData && submitData.data.counter && submitData.data.counter.is_show">
-                  <div class="temperatureSetting item" data-type="counter">
-                    <div class="title">当前温度</div>
-                    <div class="number">22</div>
-                    <div class="only-btn">
-                      <button class="icon-plus"></button>
-                      <button class="icon-minus"></button>
-                    </div>
-                    <i class="js-remove">✖</i>
-                  </div>
-                </template>
-                <!--模式设置组件-->
-                <template v-if="submitData && submitData.data.modes && submitData.data.modes.is_show">
-                  <div class="patternSetting item" data-type="modes">
-                    <div class="title">模式设置</div>
-                    <ul class="patternList">
-                      <li>
-                        <div class="patternText">
-                          <span class="icon-mode-automatic"></span>
-                          自动
-                        </div>
-                      </li>
-                      <li>
-                        <div class="patternText">
-                          <span class="icon-mode-freeze"></span>
-                          制冷
-                        </div>
-                      </li>
-                      <li>
-                        <div class="patternText">
-                          <span class="icon-mode-holiday"></span>
-                          制热
-                        </div>
-                      </li>
-                      <li>
-                        <div class="patternText">
-                          <span class="icon-mode-dry"></span>
-                          除湿
-                        </div>
-                      </li>
-                      <li>
-                        <div class="patternText">
-                          <span class="icon-range-large"></span>
-                          送风
-                        </div>
-                      </li>
-                      <li>
-                        <div class="patternText">
-                          <span class="icon-mode-smart"></span>
-                          智能
-                        </div>
-                      </li>
-                      <li>
-                        <div class="patternText">
-                          <span class="icon-mode-cool"></span>
-                          通风
-                        </div>
-                      </li>
+                  <i class="js-remove">✖</i>
+                </div>
+              </template>
+              <!--模式设置组件-->
+              <template v-if="submitData && submitData.data.modes && submitData.data.modes.is_show">
+                <div class="patternSetting item" data-type="modes">
+                  <div
+                    class="title"
+                  >{{submitData && submitData.data.modes && submitData.data.modes.title ? submitData.data.modes.title : null}}</div>
+                  <ul class="patternList">
+                    <li
+                      v-for="item in (submitData && submitData.data.modes && submitData.data.modes && submitData.data.modes.modeData ? submitData.data.modes.modeData : [])"
+                      :key="item.id"
+                    >
+                      <div class="patternText">
+                        <span :class="[item.icon]"></span>
+                        {{item.text}}
+                      </div>
+                    </li>
+                  </ul>
+                  <i class="js-remove">✖</i>
+                </div>
+              </template>
+              <!--风速调节组件-->
+              <template
+                v-if="submitData && submitData.data.windRang && submitData.data.windRang.is_show"
+              >
+                <div class="patternSetting item" data-type="windRang">
+                  <div
+                    class="title"
+                  >{{submitData && submitData.data.windRang && submitData.data.windRang.title ? submitData.data.windRang.title : null}}</div>
+                  <div class="windSpeed">
+                    <div class="slider-button"></div>
+                    <ul class="windSpeed-list">
+                      <li
+                        v-for="item in submitData && submitData.data.windRang && submitData.data.windRang.windRangValues ?  submitData.data.windRang.windRangValues : null"
+                        :key="item.value"
+                      >{{item.text}}</li>
                     </ul>
-                    <i class="js-remove">✖</i>
                   </div>
-                </template>
-                <!--风速调节组件-->
-                <template v-if="submitData && submitData.data.windRang && submitData.data.windRang.is_show">
-                  <div class="patternSetting item" data-type="windRang">
-                    <div class="title">风速调节</div>
-                    <div class="windSpeed">
-                      <div class="slider-button"></div>
-                      <ul class="windSpeed-list">
-                        <li>自动</li>
-                        <li>微风</li>
-                        <li>低风</li>
-                        <li>中风</li>
-                        <li>高风</li>
-                        <li>静音</li>
-                        <li>自然</li>
-                      </ul>
-                    </div>
-                    <i class="js-remove">✖</i>
+                  <i class="js-remove">✖</i>
+                </div>
+              </template>
+              <!--屏显组件-->
+              <template
+                v-if="submitData && submitData.data.screenDisplay && submitData.data.screenDisplay.is_show"
+              >
+                <div class="panelAssembly item" data-type="screenDisplay">
+                  <div class="title">{{submitData && submitData.data.screenDisplay && submitData.data.screenDisplay.title ? submitData.data.screenDisplay.title : null}}</div>
+                  <div class="switch-off">
+                    <span class="switch-button"></span>
                   </div>
-                </template>
-                <!--屏显组件-->
-                <template v-if="submitData && submitData.data.screenDisplay && submitData.data.screenDisplay.is_show">
-                  <div class="panelAssembly item" data-type="screenDisplay">
-                    <div class="title">屏显</div>
-                    <div class="switch-off">
-                      <span class="switch-button"></span>
-                    </div>
-                    <i class="js-remove">✖</i>
+                  <i class="js-remove">✖</i>
+                </div>
+              </template>
+              <!--静音组件-->
+              <template v-if="submitData && submitData.data.mute && submitData.data.mute.is_show">
+                <div class="panelAssembly item" data-type="mute">
+                  <div class="title">{{submitData && submitData.data.mute && submitData.data.mute.title ? submitData.data.mute.title : null}}</div>
+                  <div class="switch-off">
+                    <span class="switch-button"></span>
                   </div>
-                </template>
-                <!--静音组件-->
-                <template v-if="submitData && submitData.data.mute && submitData.data.mute.is_show">
-                  <div class="panelAssembly item" data-type="mute">
-                    <div class="title">静音</div>
-                    <div class="switch-off">
-                      <span class="switch-button"></span>
-                    </div>
-                    <i class="js-remove">✖</i>
+                  <i class="js-remove">✖</i>
+                </div>
+              </template>
+              <!--睡眠组件-->
+              <template v-if="submitData && submitData.data.sleep && submitData.data.sleep.is_show">
+                <div class="panelAssembly item" data-type="sleep">
+                  <div class="title">{{submitData && submitData.data.sleep && submitData.data.sleep.title ? submitData.data.sleep.title : null}}</div>
+                  <div class="switch-off">
+                    <span class="switch-button"></span>
                   </div>
-                </template>
-                <!--睡眠组件-->
-                <template v-if="submitData && submitData.data.sleep && submitData.data.sleep.is_show">
-                  <div class="panelAssembly item" data-type="sleep">
-                    <div class="title">睡眠</div>
-                    <div class="switch-off">
-                      <span class="switch-button"></span>
-                    </div>
-                    <i class="js-remove">✖</i>
-                  </div>
-                </template>
+                  <i class="js-remove">✖</i>
+                </div>
+              </template>
             </div>
           </vue-drop>
         </div>
       </div>
     </div>
-    <div class="contentRight">
-     参数设置
-    </div>
+    <div class="contentRight">参数设置</div>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
 window.serveData = {
-  productId: '1',
+  productId: "1",
   data: {
     header: {
-      type: 'Header',
+      type: "Header",
       is_show: true,
-      des_curtemp: '当前温度',
-      des_pattern: '当前模式',
-      des_speed: '当前风速',
+      des_curtemp: "当前温度",
+      des_pattern: "当前模式",
+      des_speed: "当前风速"
     },
     power: {
-      type: 'Power',
+      type: "Power",
       is_show: true,
+      title: "设备状态",
       status: {
-        //?????? TODO:
-        '0': '设备已关闭',
-        '1': '设备已开启',
-      },
+        "0": "设备已关闭",
+        "1": "设备已开启"
+      }
     },
     counter: {
-      type: 'Counter',
+      type: "Counter",
       is_show: true,
-      title: '温度设置',
+      title: "温度设置"
     },
     modes: {
-      type: 'Modes',
+      type: "Modes",
       is_show: true,
-      title: '模式设置',
+      title: "模式设置",
       modeData: [
         {
           id: 0,
-          text: '自动0',
-          icon: 'icon-mode-automatic',
+          text: "自动0",
+          icon: "icon-mode-automatic"
         },
         {
           id: 1,
-          text: '制冷1',
-          icon: 'icon-mode-freeze',
+          text: "制冷1",
+          icon: "icon-mode-freeze"
         },
         {
           id: 2,
-          text: '制热2',
-          icon: 'icon-mode-holiday',
+          text: "制热2",
+          icon: "icon-mode-holiday"
         },
         {
           id: 3,
-          text: '除湿',
-          icon: 'icon-mode-dry',
+          text: "除湿",
+          icon: "icon-mode-dry"
         },
         {
           id: 4,
-          text: '送风',
-          icon: 'icon-range-large',
+          text: "送风",
+          icon: "icon-range-large"
         },
         {
           id: 5,
-          text: '智能',
-          icon: 'icon-mode-smart',
+          text: "智能",
+          icon: "icon-mode-smart"
         },
         {
           id: 6,
-          text: '通风',
-          icon: 'icon-mode-cool',
-        },
-      ],
+          text: "通风",
+          icon: "icon-mode-cool"
+        }
+      ]
     },
     windRang: {
-      type: 'WindRang',
+      type: "WindRang",
       is_show: true,
-      title: '风速调节123',
+      title: "风速调节123",
       windRangValues: [
         {
           value: 0,
-          text: '自动',
+          text: "自动"
         },
         {
           value: 1,
-          text: '微风',
+          text: "微风"
         },
         {
           value: 2,
-          text: '低风',
+          text: "低风"
         },
         {
           value: 3,
-          text: '中风',
+          text: "中风"
         },
         {
           value: 4,
-          text: '高风',
+          text: "高风"
         },
         {
           value: 5,
-          text: '静音',
+          text: "静音"
         },
         {
           value: 6,
-          text: '自然',
-        },
-      ],
+          text: "自然"
+        }
+      ]
     },
     screenDisplay: {
-      type: 'ScreenDisplay',
+      type: "ScreenDisplay",
       is_show: true,
-      title: '屏显123',
+      title: "屏显123"
     },
     mute: {
-      type: 'Mute',
+      type: "Mute",
       is_show: true,
-      title: '静音123',
+      title: "静音123"
     },
     sleep: {
-      type: 'Sleep',
+      type: "Sleep",
       is_show: true,
-      title: '睡眠123',
-    },
-  },
+      title: "睡眠123"
+    }
+  }
 };
 
 export default {
-  name: 'v-content',
+  name: "v-content",
   data() {
     return {
-      msg: 'Welcome',
-      tabs: ['信息组件', '功能组件'],
+      msg: "Welcome",
+      tabs: ["信息组件", "功能组件"],
       // 左边的数据(原始数据)
       srcData: null,
       // 右边的数据（提交数据）
@@ -487,77 +442,73 @@ export default {
       num: 0,
       info: {
         // 头部信息-左侧
-        lhInfo: {
-          id: 'lhInfo',
-          gName: 'header',
+        lInfo: {
+          id: "lInfo",
+          gName: "header",
           gPull: true,
-          gPut: false,
-          bgColor: 'drag-blue',
+          gPut: true,
+          sort: false,
+          bgColor: "drag-blue",
           onMove: (evt, originalEvent, gName) => {
             this.onMoveChangeColor(gName);
           },
           onEnd: (evt, groupName) => {
             this.onEndChangeColor();
-          },
+          }
         },
-        // 头部信息-右侧上
-        rtInfo: {
-          id: 'rtInfo',
-          gName: 'header',
-          gPull: false,
-          gPut: to => to.el.children.length < 1,
-          bgColor: '',
-          filter: '.js-remove',
+        // 头部信息-右侧
+        rInfo: {
+          id: "rInfo",
+          gName: "header",
+          bgColor: "",
+          filter: ".js-remove",
           onFilter: evt => {
-            evt.item.parentNode.removeChild(evt.item);
+            const key = evt.item.getAttribute("data-type");
+            const pNode = document.querySelector("#lInfo");
+            const item = evt.item.removeChild(evt.item.lastChild);
+            const node = evt.item.cloneNode(true);
+            this.transDataByKey(key, 2);
+            this.addChild(pNode, node, key);
           },
-        },
-        // 头部信息-右侧下面
-        rbInfo: {
-          id: 'rbInfo',
-          gName: 'header',
-          gPut: to => to.el.children.length < 3,
-          gPull: false,
-          bgColor: '',
-          filter: '.js-remove',
-          onFilter: evt => {
-            evt.item.parentNode.removeChild(evt.item);
-          },
+          onAdd: evt => {
+            const key = evt.item.getAttribute("data-type");
+            this.transDataByKey(key, 1);
+          }
         },
         // 左边功能
         lfun: {
-          id: 'lfun',
-          gName: 'fun',
+          id: "lfun",
+          gName: "fun",
           gPull: true,
           gPut: true,
-          bgColor: 'drag-blue',
+          bgColor: "drag-blue",
           sort: false,
           onMove: (evt, originalEvent, gName) => {
             this.onMoveChangeColor(gName);
           },
           onEnd: (evt, groupName) => {
             this.onEndChangeColor();
-          },
+          }
         },
         rfun: {
-          id: 'rfun',
-          gName: 'fun',
-          bgColor: '',
-          filter: '.js-remove',
-          onFilter: (evt) => {
-            const key = evt.item.getAttribute('data-type');
-            const pNode = document.querySelector('#lfun');
-            const item = evt.item.removeChild(evt.item.lastChild)
+          id: "rfun",
+          gName: "fun",
+          bgColor: "",
+          filter: ".js-remove",
+          onFilter: evt => {
+            const key = evt.item.getAttribute("data-type");
+            const pNode = document.querySelector("#lfun");
+            const item = evt.item.removeChild(evt.item.lastChild);
             const node = evt.item.cloneNode(true);
             this.transDataByKey(key, 2);
             this.addChild(pNode, node, key);
           },
-          onAdd: (evt) => {
-            const key = evt.item.getAttribute('data-type')
+          onAdd: evt => {
+            const key = evt.item.getAttribute("data-type");
             this.transDataByKey(key, 1);
           }
-        },
-      },
+        }
+      }
     };
   },
   created() {
@@ -581,7 +532,7 @@ export default {
         }
         original.body = [];
         Object.keys(data).forEach((key, index) => {
-          if (key !== 'header') {
+          if (key !== "header") {
             original.body.push(Object.assign({}, data[key]));
           }
         });
@@ -592,30 +543,30 @@ export default {
     onMoveChangeColor(gName) {
       Object.keys(this.$data.info).forEach(key => {
         if (gName === this.$data.info[key].gName) {
-          this.$data.info[key].bgColor = 'drag-blue';
+          this.$data.info[key].bgColor = "drag-blue";
         }
       });
     },
     // 拖拽结束的时候还原底色
     onEndChangeColor() {
       Object.keys(this.$data.info).forEach(key => {
-        this.$data.info[key].bgColor = 'drag-default';
+        this.$data.info[key].bgColor = "drag-default";
       });
     },
     // 移动结束的时候删除数据
     deleDataByTxt(txt, oldObj, newObj) {
-      switch(txt) {
-        case '当前温度':
+      switch (txt) {
+        case "当前温度":
           delete oldObj.header.des_curtemp;
-          newObj.header.des_curtemp = '当前温度';
+          newObj.header.des_curtemp = "当前温度";
           break;
-        case '当前模式':
+        case "当前模式":
           delete oldObj.header.des_pattern;
-          newObj.header.des_pattern = '当前模式';
+          newObj.header.des_pattern = "当前模式";
           break;
-        case '当前风速':
+        case "当前风速":
           delete oldObj.header.des_speed;
-          newObj.header.des_speed = '当前风速';
+          newObj.header.des_speed = "当前风速";
           break;
         default:
           break;
@@ -625,33 +576,21 @@ export default {
     transDataByKey(curKey, type) {
       if (type === 1) {
         const src = this.srcData.data;
-        let sub = this.submitData && this.submitData.data ? this.submitData.data : {};
-        Object.keys(src).forEach((key) => {
-          if (curKey === key) {
-            const item = {};
-            item[key] = src[key];
-            console.log(sub);
-            sub = Object.assign({}, sub, item);
-            delete src[key];
-          }
-        });
-        this.submitData = Object.assign({}, this.submitData, {data: sub });
+        let sub =
+          this.submitData && this.submitData.data ? this.submitData.data : {};
+        const item = {};
+        item[curKey] = src[curKey];
+        sub = Object.assign({}, sub, item);
+        delete src[curKey];
+        sub = Object.assign({}, sub, item);
+        this.submitData = Object.assign({}, this.submitData, { data: sub });
       } else if (type === 2) {
         const src = this.submitData.data;
-        // let sub = {};
-        Object.keys(src).forEach((key) => {
-          if (curKey === key) {
-            const item = {};
-            item[key] = src[key];
-            // console.log(src[key]);
-            // sub = Object.assign({}, sub, item);
-            // this.$set(this.srcData.data, key, src[key]);
-
-            this.srcData.data = Object.assign({}, this.srcData.data, item);
-            this.srcData = Object.assign({}, this.srcData);
-            delete src[key];
-          }
-        });
+        const item = {};
+        item[curKey] = src[curKey];
+        this.srcData.data = Object.assign({}, this.srcData.data, item);
+        this.srcData = Object.assign({}, this.srcData);
+        delete src[curKey];
       } else {
         return;
       }
@@ -659,26 +598,29 @@ export default {
     // 给元素增加节点
     addChild(pNode, node, key) {
       let index = 0;
-      switch(key) {
-        case 'power':
+      switch (key) {
+        case "header":
           index = 0;
           break;
-        case 'counter':
+        case "power":
+          index = 0;
+          break;
+        case "counter":
           index = 1;
           break;
-        case 'modes':
+        case "modes":
           index = 2;
           break;
-        case 'windRang':
+        case "windRang":
           index = 3;
           break;
-        case 'screenDisplay':
+        case "screenDisplay":
           index = 4;
           break;
-        case 'mute':
+        case "mute":
           index = 5;
           break;
-        case 'sleep':
+        case "sleep":
           index = 6;
           break;
         default:
@@ -686,7 +628,7 @@ export default {
       }
       pNode.insertBefore(node, pNode.childNodes[index]);
     }
-  },
+  }
 };
 </script>
 
@@ -778,7 +720,7 @@ export default {
           position: relative;
           cursor: pointer;
           &.active::after {
-            content: '';
+            content: "";
             position: absolute;
             display: block;
             bottom: -1px;
@@ -809,8 +751,8 @@ export default {
               display: block;
               margin-bottom: 5px;
             }
-            &:first-child{
-             width: 100%;
+            &:first-child {
+              width: 100%;
             }
           }
           &:hover {
@@ -879,12 +821,12 @@ export default {
         @include transform(translateY(-50%));
       }
     }
-    .functionAssembly{
-      .item{
+    .functionAssembly {
+      .item {
         position: relative;
-        .js-remove{
-          -webkit-transition: opacity .2s;
-          transition: opacity .2s;
+        .js-remove {
+          -webkit-transition: opacity 0.2s;
+          transition: opacity 0.2s;
           opacity: 0;
           display: block;
           cursor: pointer;
@@ -893,11 +835,11 @@ export default {
           right: 5px;
           position: absolute;
           font-style: normal;
-          line-height: .12px;
+          line-height: 0.12px;
         }
-        &:hover{
+        &:hover {
           background-color: rgba(2, 186, 124, 0.21);
-          .js-remove{
+          .js-remove {
             opacity: 1;
           }
         }
@@ -905,6 +847,28 @@ export default {
     }
   }
   .assemblyInfo {
+    .item {
+      position: relative;
+      .js-remove {
+        -webkit-transition: opacity 0.2s;
+        transition: opacity 0.2s;
+        opacity: 0;
+        display: block;
+        cursor: pointer;
+        color: #c00;
+        top: 5px;
+        right: 5px;
+        position: absolute;
+        font-style: normal;
+        line-height: 0.12px;
+      }
+      &:hover {
+        background-color: rgba(2, 66, 186, 0.21);
+        .js-remove {
+          opacity: 1;
+        }
+      }
+    }
     position: relative;
     overflow: hidden;
     color: $white;
@@ -929,28 +893,28 @@ export default {
       width: 100%;
       height: 180px;
       margin: auto;
-      .scrollerAssembly{
+      .scrollerAssembly {
         width: 100%;
         overflow: hidden;
-        li{
+        li {
           float: left;
           width: 50%;
           font-size: $fontSize16;
           padding: 18px 0;
-          span{
+          span {
             font-size: $fontSize24;
             display: block;
           }
-          &:first-child{
+          &:first-child {
             width: 100%;
-            span{
+            span {
               margin-bottom: 10px;
             }
           }
         }
       }
-      &::after{
-        content: '';
+      &::after {
+        content: "";
         width: 160px;
         height: 120px;
         position: absolute;
@@ -1152,7 +1116,7 @@ export default {
         position: relative;
         padding: 40px 0 10px;
         &::after {
-          content: '';
+          content: "";
           width: 86%;
           height: 2px;
           background: $gray-c;
@@ -1165,7 +1129,7 @@ export default {
           text-align: center;
           position: relative;
           &::after {
-            content: '';
+            content: "";
             width: 8px;
             height: 8px;
             border-radius: 50%;
