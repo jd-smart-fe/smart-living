@@ -167,6 +167,7 @@
               :filter="info.rInfo.filter"
               :onFilter="info.rInfo.onFilter"
               :onAdd="info.rInfo.onAdd"
+              :onChoose="info.rInfo.onChoose"
             >
               <div class="temperatureBox" id="rInfo">
                 <template
@@ -199,6 +200,7 @@
             :filter="info.rfun.filter"
             :onFilter="info.rfun.onFilter"
             :onAdd="info.rfun.onAdd"
+            :onChoose="info.rfun.onChoose"
           >
             <div class="functionAssembly mh100" id="rfun">
               <!--设备组件-->
@@ -304,7 +306,104 @@
         </div>
       </div>
     </div>
-    <div class="contentRight">参数设置</div>
+    <div class="contentRight">
+      <div class="scroller-r">
+        <div class="scrollerConfig">
+          <ul class="scrollerTab">
+            <li>参数设置</li>
+          </ul>
+          <div class="sscrollerCon">
+            <div class="config-contain" v-show="selectType">
+              <!-- 基础信息 -->
+              <div class="base-info">
+                <div class="tit">基础信息</div>
+                <template v-if="selectType === 'header'">
+                  <div class="name-config">
+                    <span class="next-input mb10">
+                      <input type="text" maxlength="40" height="100%" v-model="des_curtemp">
+                    </span>
+                    <span class="next-input mb10">
+                      <input type="text" maxlength="40" height="100%" v-model="des_pattern">
+                    </span>
+                    <span class="next-input">
+                      <input type="text" maxlength="40" height="100%" v-model="des_speed">
+                    </span>
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="name-config">
+                    <span class="next-input mb10">
+                      <input type="text" maxlength="40" height="100%" v-model="config_tit">
+                    </span>
+                  </div>
+                </template>
+              </div>
+              <!-- 信息配置（数据配置，布尔值名称） -->
+              <div class="data-config">
+                <!-- 布尔值名称设置 -->
+                <template v-if="selectType === 'power'">
+                  <section>
+                    <div class="tit">布尔值设置</div>
+                    <div class="config-content">
+                      <div class="enum-value-config">
+                        <div class="value">0</div>
+                        <span class="next-input">
+                          <input type="text" maxlength="20" height="100%" v-model="power_status_0">
+                        </span>
+                      </div>
+                      <div class="enum-value-config">
+                        <div class="value">1</div>
+                        <span class="next-input">
+                          <input type="text" maxlength="20" height="100%" v-model="power_status_1">
+                        </span>
+                      </div>
+                    </div>
+                  </section>
+                </template>
+                <!-- 模式设置 -->
+                <template v-if="selectType === 'modes'">
+                  <section>
+                    <div class="tit">模式设置</div>
+                    <div class="config-content">
+                      <div
+                        class="mode-value-config"
+                        v-for="item in submitData && submitData.data && submitData.data.modes && submitData.data.modes.modeData ?  submitData.data.modes.modeData : []"
+                        :key="item.id"
+                      >
+                        <span class="next-input">
+                          <input type="text" maxlength="20" height="100%" v-model="item.icon">
+                        </span>
+                         <span class="next-input">
+                          <input type="text" maxlength="20" height="100%" v-model="item.text">
+                        </span>
+                      </div>
+                    </div>
+                  </section>
+                </template>
+                <!-- 风速调节设置 -->
+                <template v-if="selectType === 'windRang'">
+                  <section>
+                    <div class="tit">风速调节设置</div>
+                    <div class="config-content">
+                      <div
+                        class="wind-value-config"
+                        v-for="item in submitData && submitData.data && submitData.data.windRang && submitData.data.windRang.windRangValues ?  submitData.data.windRang.windRangValues : []"
+                        :key="item.value"
+                      >
+                        <div class="value">{{item.value}}</div>
+                        <span class="next-input">
+                          <input type="text" maxlength="20" height="100%" v-model="item.text">
+                        </span>
+                      </div>
+                    </div>
+                  </section>
+                </template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -440,6 +539,8 @@ export default {
       // 右边的数据（提交数据）
       submitData: null,
       num: 0,
+      // 右侧的类型
+      selectType: '',
       info: {
         // 头部信息-左侧
         lInfo: {
@@ -469,11 +570,19 @@ export default {
             const node = evt.item.cloneNode(true);
             this.transDataByKey(key, 2);
             this.addChild(pNode, node, key);
+            if (key === this.selectType) {
+              this.selectType = '';
+            }
           },
           onAdd: evt => {
             const key = evt.item.getAttribute("data-type");
             this.transDataByKey(key, 1);
-          }
+          },
+          onChoose: (evt) => {
+            console.log('choose');
+            const key = evt.item.getAttribute("data-type");
+            this.selectType = key;
+          },
         },
         // 左边功能
         lfun: {
@@ -502,19 +611,86 @@ export default {
             const node = evt.item.cloneNode(true);
             this.transDataByKey(key, 2);
             this.addChild(pNode, node, key);
+            if (key === this.selectType) {
+              this.selectType = '';
+            }
           },
           onAdd: evt => {
             const key = evt.item.getAttribute("data-type");
             this.transDataByKey(key, 1);
-          }
+          },
+          onChoose: (evt) => {
+            const key = evt.item.getAttribute("data-type");
+            this.selectType = key;
+          },
         }
       }
     };
   },
+  computed: {
+    des_curtemp: {
+      get: function() {
+        return this.submitData && this.submitData.data && this.submitData.data.header && this.submitData.data.header.des_curtemp ? this.submitData.data.header.des_curtemp : '';
+      },
+      set: function(val) {
+        this.submitData && this.submitData.data && this.submitData.data.header && this.submitData.data.header.des_curtemp ?
+        this.submitData.data.header.des_curtemp = val :  this.submitData.data.header.des_curtemp = '';
+      },
+    },
+    des_pattern: {
+      get: function() {
+        return this.submitData && this.submitData.data && this.submitData.data.header && this.submitData.data.header.des_pattern ? this.submitData.data.header.des_pattern : '';
+      },
+      set: function(val) {
+        this.submitData && this.submitData.data && this.submitData.data.header && this.submitData.data.header.des_pattern ?
+        this.submitData.data.header.des_pattern = val :  this.submitData.data.header.des_pattern = '';
+      },
+    },
+    des_speed: {
+      get: function() {
+        return this.submitData && this.submitData.data && this.submitData.data.header && this.submitData.data.header.des_speed ? this.submitData.data.header.des_speed : '';
+      },
+      set: function(val) {
+        this.submitData && this.submitData.data && this.submitData.data.header && this.submitData.data.header.des_speed ?
+        this.submitData.data.header.des_speed = val :  this.submitData.data.header.des_speed = '';
+      },
+    },
+    config_tit: {
+      get: function() {
+        return this.submitData && this.submitData.data && this.selectType && this.submitData.data[this.selectType] && this.submitData.data[this.selectType].title ? this.submitData.data[this.selectType].title : '';
+      },
+      set: function(val) {
+        this.submitData && this.submitData.data && this.selectType && this.submitData.data[this.selectType] ?
+        this.submitData.data[this.selectType].title = val :  this.submitData.data[this.selectType].title = '';
+      },
+    },
+    power_status_0: {
+      get: function() {
+        return this.submitData && this.submitData.data && this.selectType && this.submitData.data.power && this.submitData.data.power.status ? this.submitData.data.power.status[0] : '';
+      },
+      set: function(val) {
+        this.submitData && this.submitData.data && this.selectType && this.submitData.data.power && this.submitData.data.power.status  ?
+         this.submitData.data.power.status[0] = val :  this.submitData.data.power.status[0] = '';
+      },
+    },
+    power_status_1: {
+      get: function() {
+        return this.submitData && this.submitData.data && this.selectType && this.submitData.data.power && this.submitData.data.power.status ? this.submitData.data.power.status[1] : '';
+      },
+      set: function(val) {
+        this.submitData && this.submitData.data && this.selectType && this.submitData.data.power && this.submitData.data.power.status  ?
+         this.submitData.data.power.status[1] = val :  this.submitData.data.power.status[1] = '';
+      },
+    }
+  },
   created() {
     const serveData = window.serveData;
     this.srcData = Object.assign({}, serveData);
-    // this.srcData = this.transData(serveData);
+  },
+  mounted() {
+    // document.querySelector('.mobile').addEventListener('click', () => {
+    //   this.selectType = '';
+    // });
   },
   methods: {
     tab(index) {
@@ -647,6 +823,9 @@ export default {
 }
 .mh100 {
   min-height: 100px;
+}
+.mb10{
+  margin-bottom: 10px;
 }
 
 .contentMain {
@@ -1174,6 +1353,114 @@ export default {
         border-radius: 100%;
         z-index: 2;
         background-color: $white;
+      }
+    }
+  }
+
+   // 参数设置
+  .contentRight{
+    .scroller-r{
+      .scrollerTab{
+        border-bottom: #eaebee 1px solid;
+        li {
+          display: table-cell;
+          text-align: center;
+          padding: 10px 0;
+          position: relative;
+          cursor: pointer;
+          &.active::after {
+            content: "";
+            position: absolute;
+            display: block;
+            bottom: -1px;
+            height: 2px;
+            width: 100%;
+            background: $blue;
+          }
+        }
+      }
+      .sscrollerCon{
+        .tit{
+          color: #373d41;
+          font-size: 14px;
+          font-weight: 600;
+          line-height: 20px;
+          margin-top: 20px;
+          margin-bottom: 20px;
+        }
+        .next-input{
+          box-sizing: border-box;
+          width: 100%;
+          height: 38px;
+          display: inline-table;
+          font-size: 14px;
+          border: 1px solid #cce3e3;
+          border-radius: 4px;
+          color: rgba(55, 62, 65, .5);
+          background: #fff;
+          line-height: 1.28571;
+          input{
+            height: 40px;
+            color: rgba(55, 62, 65, .5);
+            border-radius: 3px;
+            margin: 0;
+            padding: 0 12px;
+            font-size: 14px;
+            width: 100%;
+            border: none;
+            outline: none;
+            font-weight: 400;
+            vertical-align: baseline;
+            background-color: transparent;
+            box-sizing: border-box;
+          }
+        }
+        .data-config{
+          .enum-value-config,
+          .wind-value-config{
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            width: 100%;
+            line-height: 32px;
+            box-sizing: border-box;
+            .value{
+              display: flex;
+              padding-left: 8px;
+              width: 60px;
+              opacity: .5;
+              font-size: 16px;
+              line-height: 40px;
+              color: #373d41;
+              &::after{
+                content: '';
+                display: block;
+                width: 16px;
+                margin-left: 6px;
+                margin-top: 20px;
+                border-top: 1px solid #373d41;
+                opacity: .5;
+              }
+            }
+            .next-input{
+              border-color: #c6cbd1;
+            }
+          }
+          .mode-value-config{
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            width: 100%;
+            line-height: 32px;
+            box-sizing: border-box;
+            .next-input{
+               border-color: #c6cbd1;
+              &:nth-child(1) {
+                margin-right: 10px;
+              }
+            }
+          }
+        }
       }
     }
   }
