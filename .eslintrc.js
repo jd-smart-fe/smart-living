@@ -30,5 +30,8 @@ module.exports = {
     'no-restricted-syntax': 0,
     'no-unused-vars': 0,
     'no-else-return': 0,
+    'no-param-reassign': 0,
+    'import/prefer-default-export': 0,
+    'consistent-return': 0,
   }
 }

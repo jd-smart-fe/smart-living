@@ -5,15 +5,19 @@ import Vue from 'vue';
 import VueDrop from 'vue-drop';
 import App from './App.vue';
 import router from './router';
+import store from './store';
+import Loading from './components/loading';
 
 import './assets/css/fonts/icofonts.css';
 
 Vue.config.productionTip = false;
 Vue.use(VueDrop);
+Vue.use(Loading);
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>',

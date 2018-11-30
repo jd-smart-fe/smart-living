@@ -408,9 +408,12 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+
 /* eslint-disable */
 window.serveData = {
   productId: "1",
+  templateName: 'air-condictioning',
   data: {
     header: {
       type: "Header",
@@ -537,7 +540,7 @@ export default {
       // 左边的数据(原始数据)
       srcData: null,
       // 右边的数据（提交数据）
-      submitData: null,
+      // submitData: null,
       num: 0,
       // 右侧的类型
       selectType: '',
@@ -628,6 +631,10 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({
+      submitData: 'submitData',
+      loading: 'loading',
+    }),
     des_curtemp: {
       get: function() {
         return this.submitData && this.submitData.data && this.submitData.data.header && this.submitData.data.header.des_curtemp ? this.submitData.data.header.des_curtemp : '';
@@ -688,11 +695,19 @@ export default {
     this.srcData = Object.assign({}, serveData);
   },
   mounted() {
+    if(this.loading) {
+      console.log('zhende');
+    } else {
+      console.log('jia');
+    }
     // document.querySelector('.mobile').addEventListener('click', () => {
     //   this.selectType = '';
     // });
   },
   methods: {
+    ...mapActions({
+      setSubmitData: 'setSubmitData',
+    }),
     tab(index) {
       this.num = index;
     },
@@ -759,7 +774,8 @@ export default {
         sub = Object.assign({}, sub, item);
         delete src[curKey];
         sub = Object.assign({}, sub, item);
-        this.submitData = Object.assign({}, this.submitData, { data: sub });
+        this.setSubmitData(Object.assign({}, this.submitData, { data: sub }));
+        // this.submitData = Object.assign({}, this.submitData, { data: sub });
       } else if (type === 2) {
         const src = this.submitData.data;
         const item = {};

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-header></v-header>
+    <v-header @show="showLoding" @hide="hideLoading"></v-header>
     <v-content></v-content>
   </div>
 </template>
@@ -19,6 +19,14 @@ export default {
     return {
       msg: 'Welcome',
     };
+  },
+  methods: {
+    showLoding() {
+      this.$loading.show();
+    },
+    hideLoading() {
+      this.$loading.hide();
+    },
   },
 };
 </script>
