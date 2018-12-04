@@ -10,7 +10,7 @@
         <span class="btn-base btn-blue">
           <i class="icon icon-audit"></i> 保存
         </span>
-        <span :class="['btn-base', {'btn-blue': submitData}, {'btn-disable': !submitData}]" @click="this.publish">
+        <span :class="['btn-base', {'btn-blue': submitData && submitData}, {'btn-disable': !submitData && submitData}]" @click="this.publish">
           <i class="icon icon-save"></i>发布
         </span>
         <a :class="['btn-base', {'btn-blue': downloadStatus}, {'btn-disable': !downloadStatus}]" ref="download">
