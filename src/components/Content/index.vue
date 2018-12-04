@@ -627,7 +627,8 @@ export default {
             }
           },
           onAdd: evt => {
-            console.log(evt.to.removeChild(evt.item));
+            // 先清除多余的
+            evt.to.removeChild(evt.item);
             const key = evt.item.getAttribute("data-type");
             this.transDataByKey(key, 1);
           },
@@ -773,7 +774,6 @@ export default {
     // 通过index变换源数据和要提交数据
     transDataByKey(curKey, type) {
       if (type === 1) {
-        console.log('transDataByKey type 1');
         const src = this.srcData.data;
         let sub =
           this.submitData && this.submitData.data ? this.submitData.data : {};
