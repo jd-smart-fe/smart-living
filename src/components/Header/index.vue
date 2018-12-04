@@ -44,7 +44,7 @@ export default {
       setLoading: 'setLoading',
     }),
     publish() {
-      if (rest.publish(this.submitData)) {
+      if (this.submitData) {
         this.$emit('show');
         rest.publish(this.submitData).then((res) => {
           if (res.data.status && res.data.download) {

@@ -201,6 +201,7 @@
             :onFilter="info.rfun.onFilter"
             :onAdd="info.rfun.onAdd"
             :onChoose="info.rfun.onChoose"
+            :onUpdate="info.rfun.onUpdate"
           >
             <div class="functionAssembly mh100" id="rfun">
               <!--设备组件-->
@@ -425,6 +426,7 @@ window.serveData = {
     power: {
       type: "Power",
       is_show: true,
+      index: 0,
       title: "设备状态",
       status: {
         "0": "设备已关闭",
@@ -434,12 +436,14 @@ window.serveData = {
     counter: {
       type: "Counter",
       is_show: true,
+      index: 1,
       title: "温度设置"
     },
     modes: {
       type: "Modes",
       is_show: true,
       title: "模式设置",
+      index: 2,
       modeData: [
         {
           id: 0,
@@ -482,6 +486,7 @@ window.serveData = {
       type: "WindRang",
       is_show: true,
       title: "风速调节123",
+      index: 3,
       windRangValues: [
         {
           value: 0,
@@ -516,17 +521,20 @@ window.serveData = {
     screenDisplay: {
       type: "ScreenDisplay",
       is_show: true,
-      title: "屏显123"
+      title: "屏显123",
+      index: 4,
     },
     mute: {
       type: "Mute",
       is_show: true,
-      title: "静音123"
+      title: "静音123",
+      index: 5,
     },
     sleep: {
       type: "Sleep",
       is_show: true,
-      title: "睡眠123"
+      title: "睡眠123",
+      index: 6,
     }
   }
 };
@@ -619,6 +627,7 @@ export default {
             }
           },
           onAdd: evt => {
+            console.log(evt.to.removeChild(evt.item));
             const key = evt.item.getAttribute("data-type");
             this.transDataByKey(key, 1);
           },
@@ -626,6 +635,9 @@ export default {
             const key = evt.item.getAttribute("data-type");
             this.selectType = key;
           },
+          onUpdate: (evt) => {
+            console.log('update', evt);
+          }
         }
       }
     };
@@ -695,11 +707,6 @@ export default {
     this.srcData = Object.assign({}, serveData);
   },
   mounted() {
-    if(this.loading) {
-      console.log('zhende');
-    } else {
-      console.log('jia');
-    }
     // document.querySelector('.mobile').addEventListener('click', () => {
     //   this.selectType = '';
     // });
@@ -766,6 +773,7 @@ export default {
     // 通过index变换源数据和要提交数据
     transDataByKey(curKey, type) {
       if (type === 1) {
+        console.log('transDataByKey type 1');
         const src = this.srcData.data;
         let sub =
           this.submitData && this.submitData.data ? this.submitData.data : {};
