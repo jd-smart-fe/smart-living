@@ -24,7 +24,7 @@
 <script>
 // import vContent from './content'
 import { mapGetters, mapActions } from 'vuex';
-import * as rest from '../../axios';
+// import * as rest from '../../axios';
 
 export default {
   // name: 'Header',
@@ -44,18 +44,18 @@ export default {
       setLoading: 'setLoading',
     }),
     publish() {
-      if (this.submitData) {
-        this.$emit('show');
-        rest.publish(this.submitData).then((res) => {
-          if (res.data.status && res.data.download) {
-            this.$refs.download.href = res.data.download;
-            const filename = 'air-condictioning.zip';
-            this.$refs.download = filename;
-            this.$emit('hide');
-            this.downloadStatus = true;
-          }
-        });
-      }
+      // if (this.submitData) {
+      //   this.$emit('show');
+      //   rest.publish(this.submitData).then((res) => {
+      //     if (res.data.status && res.data.download) {
+      //       this.$refs.download.href = res.data.download;
+      //       const filename = 'air-condictioning.zip';
+      //       this.$refs.download = filename;
+      //       this.$emit('hide');
+      //       this.downloadStatus = true;
+      //     }
+      //   });
+      // }
     },
   },
 };
