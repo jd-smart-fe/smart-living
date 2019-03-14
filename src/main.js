@@ -1,14 +1,13 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
-// eslint-disable-next-line
 import VueDrop from 'vue-drop';
 import App from './App.vue';
 import router from './router';
 import store from './store';
 import Loading from './components/loading';
 
-import './assets/css/fonts/icofonts.css';
+import './styles/fonts/icofonts.css';
 
 Vue.config.productionTip = false;
 Vue.use(VueDrop);

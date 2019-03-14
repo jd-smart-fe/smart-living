@@ -10,10 +10,10 @@
         <span class="btn-base btn-blue">
           <i class="icon icon-audit"></i> 保存
         </span>
-        <span :class="['btn-base', {'btn-blue': submitData && submitData}, {'btn-disable': !submitData && submitData}]" @click="this.publish">
+        <span :class="['btn-base', 'btn-blue']">
           <i class="icon icon-save"></i>发布
         </span>
-        <a :class="['btn-base', {'btn-blue': downloadStatus}, {'btn-disable': !downloadStatus}]" ref="download">
+        <a :class="['btn-base', 'btn-blue']" ref="download">
          <i class="icon icon-save"></i>下载
         </a>
       </div>
@@ -22,41 +22,13 @@
 </template>
 
 <script>
-// import vContent from './content'
-import { mapGetters, mapActions } from 'vuex';
-// import * as rest from '../../axios';
 
 export default {
-  // name: 'Header',
+  name: 'Header',
   data() {
     return {
-      msg: 'Welcome',
       downloadStatus: false,
     };
-  },
-  computed: {
-    ...mapGetters({
-      submitData: 'submitData',
-    }),
-  },
-  methods: {
-    ...mapActions({
-      setLoading: 'setLoading',
-    }),
-    publish() {
-      // if (this.submitData) {
-      //   this.$emit('show');
-      //   rest.publish(this.submitData).then((res) => {
-      //     if (res.data.status && res.data.download) {
-      //       this.$refs.download.href = res.data.download;
-      //       const filename = 'air-condictioning.zip';
-      //       this.$refs.download = filename;
-      //       this.$emit('hide');
-      //       this.downloadStatus = true;
-      //     }
-      //   });
-      // }
-    },
   },
 };
 </script>
