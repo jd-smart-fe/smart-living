@@ -8,30 +8,57 @@ module.exports = {
   env: {
     browser: true,
   },
+  // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
+  // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
   extends: [
-    // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
-    // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
-    'plugin:vue/essential',
-    // https://github.com/standard/standard/blob/master/docs/RULES-en.md
+    // 'plugin:vue/essential',
+    'plugin:vue/recommended',
     'airbnb-base'
   ],
   // required to lint *.vue files
   plugins: [
     'vue'
   ],
+  // check if imports actually resolve
+  settings: {
+    'import/resolver': {
+      webpack: {
+        config: 'build/webpack.base.conf.js'
+      }
+    }
+  },
   // add your custom rules here
   rules: {
-    // allow async-await
-    'generator-star-spacing': 'off',
+    "no-console": "off",
+    // don't require .vue extension when importing
+    'import/extensions': ['error', 'always', {
+      js: 'never',
+      vue: 'never'
+    }],
+    // disallow reassignment of function parameters
+    // disallow parameter object manipulation except for specific exclusions
+    'no-param-reassign': ['error', {
+      props: true,
+      ignorePropertyModificationsFor: [
+        'state', // for vuex state
+        'acc', // for reduce accumulators
+        'e' // for e.returnvalue
+      ]
+    }],
+    // allow optionalDependencies
+    'import/no-extraneous-dependencies': ['error', {
+      optionalDependencies: ['test/unit/index.js']
+    }],
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'max-len': 0,
-    'no-console': 0,
-    'no-restricted-syntax': 0,
-    'no-unused-vars': 0,
-    'no-else-return': 0,
-    'no-param-reassign': 0,
-    'import/prefer-default-export': 0,
+    'quote-props': 0,
+    'no-useless-return': 0,
     'consistent-return': 0,
+    'no-constant-condition': 0,
+    'global-require': 0,
+    'linebreak-style': 0,
+    'array-callback-return': 0,
+    'no-useless-computed-key': 0,
+    'no-void': 0,
   }
 }

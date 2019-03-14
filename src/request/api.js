@@ -3,6 +3,7 @@
  * @Author: shilili1
  */
 
-import { get, post } from './http';
+import { get } from './http';
 
+// eslint-disable-next-line import/prefer-default-export
 export const getInitData = param => get('static/mock/getInitData.json', param);

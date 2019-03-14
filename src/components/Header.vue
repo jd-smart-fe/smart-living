@@ -1,20 +1,23 @@
 <template>
   <div class="living-header">
     <div class="head-title clearfix">
-      <a class="btn-back icon-revoke" href>返回</a>
+      <a class="btn-back icon-revoke">返回</a>
       <h2 class="pmTit">冰箱</h2>
       <div class="head-right">
         <span class="btn-base">
-          <i class="icon icon-see"></i> 预览
+          <i class="icon icon-see"/> 预览
         </span>
         <span class="btn-base btn-blue">
-          <i class="icon icon-audit"></i> 保存
+          <i class="icon icon-audit"/> 保存
         </span>
         <span :class="['btn-base', 'btn-blue']">
-          <i class="icon icon-save"></i>发布
+          <i class="icon icon-save"/>发布
         </span>
-        <a :class="['btn-base', 'btn-blue']" ref="download">
-         <i class="icon icon-save"></i>下载
+        <a
+          ref="download"
+          :class="['btn-base', 'btn-blue']"
+        >
+          <i class="icon icon-save"/>下载
         </a>
       </div>
     </div>

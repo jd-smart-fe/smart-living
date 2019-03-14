@@ -1,7 +1,7 @@
 import Loading from './Loading.vue';
 
 export default {
-  install(Vue, defaultOptions = {}) {
+  install(Vue) {
     const LoadingComponent = Vue.extend(Loading);
     const LoadingCom = new LoadingComponent();
     const loading = {};
@@ -18,6 +18,7 @@ export default {
       LoadingCom.hide();
     };
 
-    Vue.prototype.$loading = loading;
+    const instance = Vue;
+    instance.prototype.$loading = loading;
   },
 };

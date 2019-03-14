@@ -5,14 +5,10 @@
 </template>
 
 <script>
-import { getInitData } from './request/api';
 
 export default {
   name: 'App',
   mounted() {
-    // getInitData().then((res) => {
-    //   console.log(1);
-    // });
     this.$store.dispatch('setInfoData');
   },
 };

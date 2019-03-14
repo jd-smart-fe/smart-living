@@ -1,13 +1,13 @@
 <template>
   <div>
-    <v-header></v-header>
-    <v-content></v-content>
+    <v-header/>
+    <v-content/>
   </div>
 </template>
 
 <script>
 import VHeader from '../components/Header.vue';
-import VContent from '../components/Content.vue';
+import VContent from '../components/content/Content.vue';
 
 export default {
   name: 'Home',
