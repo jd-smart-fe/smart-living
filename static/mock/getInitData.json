@@ -13,7 +13,7 @@
           "name":"模式",
           "value":0,
           "thum":"https://i.h2.pdim.gs/dmfd/200_200_100/9490e68119724f531abd2d1f6412b312.jpeg",
-          "isShowInStandard":false
+          "isShowInStandard":true
       },
       {
           "streamId":"Wind",

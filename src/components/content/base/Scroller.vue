@@ -14,7 +14,24 @@
         class="scrollerCon"
       >
         <div class="scrollerAssembly">
-          信息
+          <div
+            v-for="item of hData"
+            v-show="!item.isShowInStandard"
+            :key="item.streamId"
+            class="item"
+          >
+            <div
+              class="img-wrap"
+            >
+              <img
+                :src="item.thum"
+                alt="图片"
+              >
+            </div>
+            <p class="des">
+              {{ item.name }}
+            </p>
+          </div>
         </div>
       </div>
       <div
@@ -22,7 +39,24 @@
         class="scrollerCon"
       >
         <div class="scrollerAssembly">
-          功能
+          <div
+            v-for="(item, key) of bData"
+            v-show="!item.isShowInStandard"
+            :key="key"
+            class="item"
+          >
+            <div
+              class="img-wrap"
+            >
+              <img
+                :src="item.thum"
+                alt="图片"
+              >
+            </div>
+            <p class="des">
+              {{ item.name }}
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -30,17 +64,38 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'Scroller',
   data() {
     return {
       tabs: ['信息组件', '功能组件'],
       num: 0,
+      hData: [],
+      bData: null,
     };
+  },
+  computed: {
+    ...mapGetters({
+      'infoData': 'infoData',
+    }),
+  },
+  watch: {
+    infoData: {
+      handler(val) {
+        this.getInfo(val);
+      },
+      deep: true,
+    },
   },
   methods: {
     tab(index) {
       this.num = index;
+    },
+    getInfo(val) {
+      this.hData = [...val.header];
+      this.bData = Object.assign({}, val.body);
     },
   },
 };
@@ -93,8 +148,29 @@ export default {
           border: $gray-white 1px solid;
           background: $white;
           padding: 5px;
-          &:hover {
-            border: $blue 1px solid;
+        }
+      }
+    }
+    // 新增的
+    .scrollerAssembly{
+      display: flex;
+      flex-wrap: wrap;
+      .item{
+        width: 84px;
+        margin-right: 20px;
+        margin-bottom: 10px;
+        .img-wrap{
+          margin-bottom: 8px;
+          padding: 8px;
+          width: 66px;
+          height: 60px;
+          color: #0c9;
+          cursor: pointer;
+          background: #fff;
+          border: 1px dotted #0c9;
+          border-radius: 3px;
+          img{
+            width: 100%;
           }
         }
       }
