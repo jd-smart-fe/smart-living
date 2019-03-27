@@ -5,5 +5,12 @@
 
 import { get } from './http';
 
-// eslint-disable-next-line import/prefer-default-export
-export const getInitData = param => get('static/mock/getInitData.json', param);
+const getLibData = param => get('static/mock/getLibData.json', param);
+const getMobileData = param => get('static/mock/getMobileData.json', param);
+const getParamData = param => get('static/mock/getParamData.json', param);
+
+export {
+  getLibData,
+  getMobileData,
+  getParamData,
+};

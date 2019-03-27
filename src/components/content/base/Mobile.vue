@@ -12,14 +12,24 @@
         信息组件区域
       </div>
       <!--功能组件-->
+      <Power />
+      <Mode />
       功能组件
     </div>
   </div>
 </template>
 
 <script>
+// 为了vue-stone和jdwh 的组件能够正常的显示
+(function () {
+  const rem = 100;
+  document.querySelector('html').style.fontSize = `${rem}px`;
+}());
+
 export default {
   name: 'Mobile',
+  components: {
+  },
 };
 </script>
 

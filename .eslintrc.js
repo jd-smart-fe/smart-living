@@ -15,7 +15,7 @@ module.exports = {
     'plugin:vue/recommended',
     'airbnb-base'
   ],
-  // required to lint *.vue files
+  // required to lint *.vue filesf
   plugins: [
     'vue'
   ],
@@ -57,8 +57,5 @@ module.exports = {
     'no-constant-condition': 0,
     'global-require': 0,
     'linebreak-style': 0,
-    'array-callback-return': 0,
-    'no-useless-computed-key': 0,
-    'no-void': 0,
   }
 }

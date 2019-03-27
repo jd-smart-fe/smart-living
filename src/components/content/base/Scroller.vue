@@ -78,11 +78,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      'infoData': 'infoData',
+      'libData': 'libData',
     }),
   },
   watch: {
-    infoData: {
+    libData: {
       handler(val) {
         this.getInfo(val);
       },

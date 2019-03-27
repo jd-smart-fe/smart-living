@@ -1,9 +1,11 @@
-import { getInitData } from '../request/api';
-
 export default {
-  setInfoData({ commit }) {
-    getInitData().then((response) => {
-      commit('SET_INFO_DATA', response);
-    });
+  setLibData({ commit }, payload) {
+    commit('SET_LIB_DATA', payload);
+  },
+  setMobileData({ commit }, payload) {
+    commit('SET_MOBILE_DATA', payload);
+  },
+  setParamData({ commit }, payload) {
+    commit('SET_PARAM_DATA', payload);
   },
 };

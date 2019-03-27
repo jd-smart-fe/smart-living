@@ -1,0 +1,42 @@
+{
+  "uuid": "0001",
+  "header": [
+    {
+      "name": "当前温度",
+      "thum": "https://i.h2.pdim.gs/dmfd/200_200_100/9490e68119724f531abd2d1f6412b312.jpeg",
+      "streamId": "CurrentTemperature"
+    }
+  ],
+  "body": [
+    {
+      "name": "开关",
+      "thum": "https://i.h2.pdim.gs/dmfd/200_200_100/9490e68119724f531abd2d1f6412b312.jpeg",
+      "streamId": "Power",
+      "componentId": "1"
+    },
+    {
+      "name": "模式",
+      "thum": "https://i.h2.pdim.gs/dmfd/200_200_100/9490e68119724f531abd2d1f6412b312.jpeg",
+      "streamId": "Mode",
+      "componentId": "2"
+    },
+    {
+      "name": "风速",
+      "thum": "https://i.h2.pdim.gs/dmfd/200_200_100/9490e68119724f531abd2d1f6412b312.jpeg",
+      "streamId": "Mode",
+      "componentId": "3"
+    },
+    {
+      "name": "按键音量",
+      "thum": "https://i.h2.pdim.gs/dmfd/200_200_100/9490e68119724f531abd2d1f6412b312.jpeg",
+      "streamId": "Volume",
+      "componentId": "4"
+    },
+    {
+      "name": "温度调节",
+      "thum": "https://i.h2.pdim.gs/dmfd/200_200_100/9490e68119724f531abd2d1f6412b312.jpeg",
+      "streamId": "TemperatureSet",
+      "componentId": "5"
+    }
+  ]
+}
